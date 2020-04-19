@@ -7,7 +7,7 @@ services:
       context: .
       dockerfile: yin.dockerfile
     container_name: yang-container 
-    image: yang-image
+    image: yin-image
     ports:
       - "3000:3000"
     volumes: 
