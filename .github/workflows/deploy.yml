@@ -24,11 +24,10 @@ jobs:
         gcloud auth configure-docker
       
     - name: ssh to instance
-    - uses: appleboy/ssh-action@master
+      uses: appleboy/ssh-action@master
       with:
         host: applytics.in
         username: git_bot
         key: ${{ secrets.SERVER_PRIVATE_KEY }}
         script: ls
-    - run:  ls
       
