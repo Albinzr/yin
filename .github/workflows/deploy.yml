@@ -17,7 +17,7 @@ jobs:
       run: docker image ls
     
     - name: Tage image
-      run:  docker tag gcr.io/applytics/yang-image 
+      run:  docker tag yang-image gcr.io/applytics/yang-image 
       
       
     # Setup gcloud CLI
@@ -34,7 +34,7 @@ jobs:
         gcloud auth configure-docker
     
     - name: Push image to google container
-      run:  docker push yang-image gcr.io/applytics/yang-image 
+      run:  docker push gcr.io/applytics/yang-image
 
 
     - name: ssh to instance
