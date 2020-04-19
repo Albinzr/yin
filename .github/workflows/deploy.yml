@@ -18,7 +18,7 @@ jobs:
         # via gcloud command-line tool.
         gcloud auth configure-docker:  
       
-    - name: ssh to instance
+#     - name: ssh to instance
     - uses: appleboy/ssh-action@master
       with:
         host: applytics.in
