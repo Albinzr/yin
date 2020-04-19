@@ -9,12 +9,17 @@ jobs:
 
     - name: Checkout
       uses: actions/checkout@v2
-    - name: Build the docker-compose stack
+      
+    - name: Docker-compose build image
       run: docker-compose build
+      
     - name: Check images
       run: docker image ls
-
-
+    
+    - name: Tage image
+      run:  docker tag gcr.io/applytics/yang-image 
+      
+      
     # Setup gcloud CLI
     - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
       with:
@@ -27,7 +32,11 @@ jobs:
         # Set up docker to authenticate
         # via gcloud command-line tool.
         gcloud auth configure-docker
-      
+    
+    - name: Push image to google container
+      run:  docker push yang-image gcr.io/applytics/yang-image 
+
+
     - name: ssh to instance
       uses: appleboy/ssh-action@master
       with:
