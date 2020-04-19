@@ -10,7 +10,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
     - name: Build the docker-compose stack
-      run: docker-compose build
+      run: ls
     - name: Sleep
       uses: jakejarvis/wait-action@master
       with:
