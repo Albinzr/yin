@@ -5,5 +5,6 @@ import (
 )
 
 func main() {
+	// runtime.GOMAXPROCS(4)
 	server.Start()
 }

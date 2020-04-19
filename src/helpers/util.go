@@ -4,13 +4,23 @@ import (
 	"flag"
 	"os"
 	"runtime"
+	"strconv"
 
 	"github.com/joho/godotenv"
 	log "github.com/sirupsen/logrus"
 )
 
+//Config :- env struct
 type Config struct {
-	Port string
+	Port       string
+	KafkaURL   string
+	KafkaTopic string
+	GroupID    string
+	Partition  int
+	MinBytes   int
+	MaxBytes   int
+	FileSize   int64
+	Retry      int
 }
 
 //LogError :- common function for loging error
@@ -39,7 +49,14 @@ func LogDebug(args ...interface{}) {
 //LoadEnvConfig :- for loading config files
 func LoadEnvConfig() *Config {
 	runtime.GOMAXPROCS(runtime.NumCPU())
+
 	var err error
+	var partition int
+	var minBytes int
+	var maxBytes int
+	var fileSize int64
+	var retry int
+
 	key := flag.String("env", "development", "")
 	flag.Parse()
 	LogInfo("env:", *key)
@@ -55,7 +72,45 @@ func LoadEnvConfig() *Config {
 		LogFatal("cannot load config file", err)
 	}
 
+	partition, err = strconv.Atoi(os.Getenv("PARTITION"))
+	if err != nil {
+		partition = 0
+		LogError("unable to read from env key:PARTITION", err)
+	}
+
+	minBytes, err = strconv.Atoi(os.Getenv("MIN_BYTES"))
+	if err != nil {
+		minBytes = 0
+		LogError("unable to read from env key:MIN_BYTES", err)
+	}
+
+	maxBytes, err = strconv.Atoi(os.Getenv("MAX_BYTES"))
+	if err != nil {
+		maxBytes = 1000000
+		LogError("unable to read from env key:MAX_BYTES", err)
+	}
+
+	fileSize, err = strconv.ParseInt(os.Getenv("FILE_SIZE"), 10, 64)
+	if err != nil {
+		fileSize = 1
+		LogError("unable to read from env key:FILE_SIZE", err)
+	}
+	retry, err = strconv.Atoi(os.Getenv("RETRY"))
+	if err != nil {
+		retry = 3
+		LogError("unable to read from env key:RETRY", err)
+	}
+
 	config := new(Config)
 	config.Port = os.Getenv("PORT")
+	config.KafkaURL = os.Getenv("KAFKA")
+	config.KafkaURL = os.Getenv("KAFKA_URL")
+	config.KafkaTopic = os.Getenv("KAFKA_TOPIC")
+	config.GroupID = os.Getenv("GROUP_ID")
+	config.Partition = partition
+	config.MinBytes = minBytes
+	config.MaxBytes = maxBytes
+	config.FileSize = fileSize
+	config.Retry = retry
 	return config
 }

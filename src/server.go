@@ -3,6 +3,7 @@ package server
 import (
 	"bufio"
 	"errors"
+	"fmt"
 	"net/http"
 	"path/filepath"
 	"strconv"
@@ -10,9 +11,10 @@ import (
 	"time"
 
 	util "applytics.in/yin/src/helpers"
-	kafka "applytics.in/yin/src/kafka"
 	middleware "applytics.in/yin/src/middlewares"
-	queue "applytics.in/yin/src/queue"
+
+	kafka "github.com/Albinzr/kafkaGo"
+	queue "github.com/Albinzr/queueGo"
 
 	engineio "github.com/googollee/go-engine.io"
 	"github.com/googollee/go-engine.io/transport"
@@ -24,28 +26,34 @@ import (
 type Message func(message string)
 
 var env = util.LoadEnvConfig()
-var path, _ = filepath.Abs("../temp")
+var path, _ = filepath.Abs("./store")
 var io *socket.Server = setupSocket()
-
 var kafkaConfig = &kafka.Config{
-	Topic:     "beacon-1",
-	Partition: 0,
-	URL:       "localhost:9093",
-	GroupID:   "beaconGroup-1",
-	MinBytes:  1,
-	MaxBytes:  10485760,
+	Topic:     env.KafkaTopic,
+	Partition: env.Partition,
+	URL:       env.KafkaURL,
+	GroupID:   env.GroupID,
+	MinBytes:  env.MinBytes,
+	MaxBytes:  env.MaxBytes,
 }
 
 var queueConfig = &queue.Config{
 	StoragePath: path,
-	FileSize:    1,
-	NoOfRetries: 3,
+	FileSize:    env.FileSize,
+	NoOfRetries: env.Retry,
 }
 
+//Start :- server start function
 func Start() {
+	fmt.Printf("%+v\n", kafkaConfig)
+	fmt.Printf("%+v\n", queueConfig)
+
+	util.LogInfo("Temp file storage path: ", path)
+	util.LogInfo("Env: ", env)
+	queueConfig.Init() // seprate thread
 
 	//Start reading msgs from file and pass it to kafka
-	go readMessageToKafka()
+	go readMessageToKafka() // seprate thread
 
 	//Socket io connection event listener
 	socketConnectionListener()
@@ -60,19 +68,18 @@ func Start() {
 }
 
 func readMessageToKafka() {
-	util.LogInfo("Started reading message from file")
 
 	//Start kafka
 	err := startKafka()
-	util.LogError("Kafka connection issue", err)
-
 	if err != nil {
+		util.LogError("Kafka connection issue", err)
 		//if error try after (T) sec
 		time.AfterFunc(30*time.Second, readMessageToKafka)
-		return
 	}
-	//Read msg from file
-	readFromQueue()
+
+	util.LogInfo("Started reading message from file")
+	//Read from file
+	queueConfig.Read(readQueueCallback)
 }
 
 func setupSocket() *socket.Server {
@@ -119,13 +126,7 @@ func socketBeaconListener(callback Message) {
 }
 
 func beaconWriterCallback(message string) {
-	path, _ := filepath.Abs("../temp")
-	config := &queue.Config{
-		StoragePath: path,
-		FileSize:    1,
-		NoOfRetries: 3,
-	}
-	config.Insert(message)
+	queueConfig.Insert(message)
 }
 
 func readQueueCallback(message string, fileName string) {
@@ -147,13 +148,8 @@ func readQueueCallback(message string, fileName string) {
 	util.LogError("Cannot write to kafka: "+fileName+"& count:"+strconv.Itoa(errCount), errors.New(""))
 }
 
-func readFromQueue() {
-	//Read from file
-	queueConfig.Read(readQueueCallback)
-}
-
 func startKafka() error {
-	if kafkaConfig.Init() {
+	if kafkaConfig.IsKafkaReady() {
 		util.LogInfo("Connected to kafka")
 		return nil
 	}
