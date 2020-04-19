@@ -10,13 +10,13 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
     - name: Build the docker-compose stack
-      run: docker-compose up -d
+      run: docker-compose build
     - name: Sleep
       uses: jakejarvis/wait-action@master
       with:
         time: '60s'
-    - name: Check running containers
-      run: docker ps
+    - name: Check images
+      run: docker image ls
 
 
     # Setup gcloud CLI
