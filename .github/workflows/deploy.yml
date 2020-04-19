@@ -43,5 +43,5 @@ jobs:
         host: applytics.in
         username: git_bot
         key: ${{ secrets.SERVER_PRIVATE_KEY }}
-        script: ls && pull gcr.io/applytics/yin-image:latest
+        script: ls && sudo docker pull gcr.io/applytics/yin-image:latest
       
