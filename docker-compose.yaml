@@ -6,6 +6,8 @@ services:
     build:
       context: .
       dockerfile: yin.dockerfile
+    container_name: yang-container 
+    image: yang-image
     ports:
       - "3000:3000"
     volumes: 
@@ -15,7 +17,6 @@ services:
     restart: always
     networks:
       - yinyang-network
-    container_name: yin-container 
 
 # zookeeper 
   zookeeper:
