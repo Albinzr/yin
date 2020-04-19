@@ -2,11 +2,19 @@ name: Deploy
 on: [push]
 
 jobs:
-  build:
+  setup-build-publish-deploy:
+    name: Setup, Build, Publish, and Deploy
     runs-on: ubuntu-latest
+    
     steps: 
-    - name: Build and Make image, Push image and Pull image and run in instance 
-      uses: appleboy/ssh-action@master
+    - name: install gcloud 
+    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      with:
+        version: '270.0.0'
+        service_account_email: ${{ secrets.GKE_EMAIL }}
+        service_account_key: ${{ secrets.GKE_KEY }}
+      
+    - uses: appleboy/ssh-action@master
       with:
         host: applytics.in
         username: git_bot
