@@ -44,7 +44,7 @@ jobs:
         KEY: ${{ secrets.SERVER_PRIVATE_KEY }}
       with:
         source: "docker-compose.yaml"
-        target: "/yin/"
+        target: "yin"
 
 #     - name: ssh to instance
 #       uses: appleboy/ssh-action@master
