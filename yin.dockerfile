@@ -8,7 +8,7 @@ RUN CGO_ENABLED=0 GOOS=linux go build -ldflags '-w -s' -a -installsuffix cgo -o 
 FROM alpine:latest  
 RUN apk --no-cache add ca-certificates
 WORKDIR /root/
-EXPOSE 3000:3000
+EXPOSE 1000:1000
 COPY --from=goBuilder /go/src/yin/yin /go/src/yin/production.env /go/src/yin/local.env ./
 # RUN mkdir temp
 # RUN cat > temp.txt

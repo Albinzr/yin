@@ -6,11 +6,11 @@ services:
     image: gcr.io/applytics/yin-image:latest
     container_name: yin-container 
     ports:
-      - "3000:3000"
+      - "1000:1000"
     volumes: 
       - file-storage:/root/temp
     expose:
-    - "3000"
+    - "1000"
     restart: always
     networks:
       - yinyang-network
