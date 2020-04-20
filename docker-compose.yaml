@@ -6,7 +6,7 @@ services:
     build:
       context: .
       dockerfile: yin.dockerfile
-    container_name: yang-container 
+    container_name: yin-container 
     image: yin-image
     ports:
       - "3000:3000"

@@ -4,6 +4,7 @@ services:
 # reader server to read all incoming beacon
   yin:
     image: gcr.io/applytics/yin-image:latest
+    container_name: yin-container 
     ports:
       - "3000:3000"
     volumes: 
