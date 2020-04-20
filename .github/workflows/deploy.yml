@@ -10,31 +10,31 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
       
-#     - name: Docker-compose build image
-#       run: docker-compose build
+    - name: Docker-compose build image
+      run: docker-compose build
       
-#     - name: Check images
-#       run: docker image ls
+    - name: Check images
+      run: docker image ls
     
-#     - name: Tag image
-#       run:  docker tag yin-image gcr.io/applytics/yin-image 
+    - name: Tag image
+      run:  docker tag yin-image gcr.io/applytics/yin-image 
       
       
-#     # Setup gcloud CLI
-#     - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
-#       with:
-#         version: '270.0.0'
-#         service_account_email: ${{ secrets.GKE_EMAIL }}
-#         service_account_key: ${{ secrets.GKE_KEY }}
+    # Setup gcloud CLI
+    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      with:
+        version: '270.0.0'
+        service_account_email: ${{ secrets.GKE_EMAIL }}
+        service_account_key: ${{ secrets.GKE_KEY }}
 
-#     # Configure docker to use the gcloud command-line tool as a credential helper
-#     - run: |
-#         # Set up docker to authenticate
-#         # via gcloud command-line tool.
-#         gcloud auth configure-docker
+    # Configure docker to use the gcloud command-line tool as a credential helper
+    - run: |
+        # Set up docker to authenticate
+        # via gcloud command-line tool.
+        gcloud auth configure-docker
     
-#     - name: Push image to google container
-#       run:  docker push gcr.io/applytics/yin-image
+    - name: Push image to google container
+      run:  docker push gcr.io/applytics/yin-image
       
     - name: copy production docker-compose file
       uses: appleboy/scp-action@master
@@ -43,14 +43,14 @@ jobs:
         USERNAME: git_bot
         KEY: ${{ secrets.SERVER_PRIVATE_KEY }}
       with:
-        source: "docker-compose.yaml"
+        source: "docker-compose-production.yaml"
         target: "yin"
 
-#     - name: ssh to instance
-#       uses: appleboy/ssh-action@master
-#       with:
-#         host: applytics.in
-#         username: git_bot
-#         key: ${{ secrets.SERVER_PRIVATE_KEY }}
-#         script: cd yin && sudo docker pull gcr.io/applytics/yin-image:latest && sudo sudo docker-compose up -d
+    - name: ssh to instance
+      uses: appleboy/ssh-action@master
+      with:
+        host: applytics.in
+        username: git_bot
+        key: ${{ secrets.SERVER_PRIVATE_KEY }}
+        script: cd yin && sudo docker pull gcr.io/applytics/yin-image:latest && sudo docker-compose up -f docker-compose-production.yaml -d
       
