@@ -57,7 +57,8 @@ services:
 # global network for entire system
 networks:
   yinyang-network:
-    external: true
+    driver: bridge
+    name: yinyang-network
 
 # storage for yin server 
 volumes:

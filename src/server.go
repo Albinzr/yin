@@ -121,6 +121,7 @@ func socketCloseListener(io *socket.Server) {
 
 func socketBeaconListener(callback Message) {
 	io.OnEvent("/", "beacon", func(s socket.Conn, msg string) {
+		s.Emit("msgAck", "Recived msg")
 		callback(msg)
 	})
 }
