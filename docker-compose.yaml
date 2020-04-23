@@ -63,7 +63,8 @@ networks:
     driver: bridge
     name: yinyang-network
 
-# storage for yin server 
+
+# storage for yin server.
 volumes:
   file-storage:
     name: file-storage
