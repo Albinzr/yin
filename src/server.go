@@ -123,7 +123,7 @@ func socketBeaconListener(callback Message) {
 	io.OnEvent("/", "beacon", func(s socket.Conn, msg string) {
 		s.Emit("msgAck", "Recived msg")
 		util.LogInfo(msg)
-		callback(msg)
+		callback(msg + "\n")
 	})
 }
 
