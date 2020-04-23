@@ -12,6 +12,10 @@ github.com/Albinzr/kafkaGo v0.0.0-20200413113131-5c6cc462fa6b h1:xkIJmxvldDHhiBt
 github.com/Albinzr/kafkaGo v0.0.0-20200413113131-5c6cc462fa6b/go.mod h1:zvhEAcny8uS8XJ4SmKAKgVtE5DkuszcqEd2RPh7HiX0=
 github.com/Albinzr/queueGo v0.0.0-20200413115013-c22542f72dc0 h1:YhtBlEBS3LXMclX+PL9U/koR4Mp8ygwWQhMRKGIysqg=
 github.com/Albinzr/queueGo v0.0.0-20200413115013-c22542f72dc0/go.mod h1:Uu7ReZlSLBlag9O78I4Q+y8P6oAFsEngMf0tLYVY5ik=
+github.com/Albinzr/queueGo v0.0.0-20200423155815-359e5733ffbd h1:tbBACfZ3wEaBNC0eNgPy/0qUakJTrHBGHGueSCiCI7A=
+github.com/Albinzr/queueGo v0.0.0-20200423155815-359e5733ffbd/go.mod h1:vHNAeBcOwBVKj2R2KZ09kY7m1cd9Sru68RVbCmUOpd0=
+github.com/Albinzr/queueGo v1.0.1 h1:csCXUu19+s0MPT8W9exFz6L3bj2o0dP/d1Uta41mDo4=
+github.com/Albinzr/queueGo v1.0.1/go.mod h1:vHNAeBcOwBVKj2R2KZ09kY7m1cd9Sru68RVbCmUOpd0=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/DataDog/zstd v1.4.0 h1:vhoV+DUHnRZdKW1i5UMjAk2G4JY8wN4ayRfYDNdEhwo=
 github.com/DataDog/zstd v1.4.0/go.mod h1:1jcaCB/ufaK+sKp1NBhlGmpz41jOoPQ35bpF36t7BBo=
