@@ -115,7 +115,7 @@ func socketConnectionListener() {
 func socketCloseListener(io *socket.Server) {
 	io.OnDisconnect("/", func(s socket.Conn, msg string) {
 		util.LogInfo("closed....:", s.RemoteAddr().String(), msg)
-		s.Close()
+		// s.Close()
 	})
 }
 
