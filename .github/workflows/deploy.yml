@@ -53,4 +53,3 @@ jobs:
         username: git_bot
         key: ${{ secrets.SERVER_PRIVATE_KEY }}
         script: cd yin && sudo docker pull gcr.io/applytics/yin-image:latest && sudo docker-compose -f docker-compose-production.yaml up -d
-      
