@@ -137,6 +137,7 @@ func readQueueCallback(message string, fileName string) {
 	scanner := bufio.NewScanner(strings.NewReader(message))
 	for scanner.Scan() {
 		msg := scanner.Text()
+		util.LogInfo(fileName)
 		kafkaConfig.Write(msg, func(isWritten bool) {
 			if !isWritten {
 				errCount++
