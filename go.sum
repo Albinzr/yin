@@ -6,8 +6,8 @@ dmitri.shuralyov.com/html/belt v0.0.0-20180602232347-f7d459c86be0/go.mod h1:JLBr
 dmitri.shuralyov.com/service/change v0.0.0-20181023043359-a85b471d5412/go.mod h1:a1inKt/atXimZ4Mv927x+r7UpyzRUf4emIoiiSC2TN4=
 dmitri.shuralyov.com/state v0.0.0-20180228185332-28bcc343414c/go.mod h1:0PRwlb0D6DFvNNtx+9ybjezNCa8XF0xaYcETyp6rHWU=
 git.apache.org/thrift.git v0.0.0-20180902110319-2566ecd5d999/go.mod h1:fPE2ZNJGynbRyZ4dJvy6G277gSllfV2HJqblrnkyeyg=
-github.com/Albinzr/kafkaGo v0.0.0-20200413113131-5c6cc462fa6b h1:xkIJmxvldDHhiBtTPGiGaQKrckZSLwLHHuWl2elJUEc=
-github.com/Albinzr/kafkaGo v0.0.0-20200413113131-5c6cc462fa6b/go.mod h1:zvhEAcny8uS8XJ4SmKAKgVtE5DkuszcqEd2RPh7HiX0=
+github.com/Albinzr/kafkaGo v0.0.1 h1:8etu5CxhRrLKMXdKbbGhCWIpQVy8b0D4mIRTBeHm7ac=
+github.com/Albinzr/kafkaGo v0.0.1/go.mod h1:zvhEAcny8uS8XJ4SmKAKgVtE5DkuszcqEd2RPh7HiX0=
 github.com/Albinzr/queueGo v1.2.3 h1:1lmn3D4xFbJYZDmI1xqCDCmdmYa6PEeKfeYtbWCZGEU=
 github.com/Albinzr/queueGo v1.2.3/go.mod h1:lvdKdObqmUziVMol+8oKLcmoWPdAvK93sJ7nBmLGm0Q=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
