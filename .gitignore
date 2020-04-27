@@ -22,6 +22,7 @@
 ### Go Patch ###
 /vendor/
 /Godeps/
+/store/*
 
 ### VisualStudio ###
 ## Ignore Visual Studio temporary files, build results, and
