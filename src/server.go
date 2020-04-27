@@ -125,6 +125,7 @@ func socketBeaconListener(callback Message) {
 }
 
 func beaconWriterCallback(message string) {
+	fmt.Print(".")
 	queueConfig.Insert(message)
 }
 
