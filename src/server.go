@@ -132,18 +132,21 @@ func beaconWriterCallback(message string) {
 }
 
 func readQueueCallback(message string, fileName string) {
-
+	util.LogInfo(fileName)
 	errCount := 0
 	scanner := bufio.NewScanner(strings.NewReader(message))
 	for scanner.Scan() {
+		util.LogInfo("inloop")
 		msg := scanner.Text()
-		kafkaConfig.Write(msg, func(isWritten bool) {
+		go kafkaConfig.Write(msg, func(isWritten bool) {
 			if !isWritten {
 				errCount++
 			}
 		})
 	}
+	util.LogInfo("loop out")
 	if errCount == 0 {
+		util.LogInfo("commiting")
 		queueConfig.CommitFile(fileName)
 		util.LogInfo("commited file: ", fileName)
 		return
