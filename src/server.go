@@ -1,13 +1,10 @@
 package server
 
 import (
-	"bufio"
 	"errors"
 	"fmt"
 	"net/http"
 	"path/filepath"
-	"strconv"
-	"strings"
 	"time"
 
 	util "applytics.in/yin/src/helpers"
@@ -133,25 +130,18 @@ func beaconWriterCallback(message string) {
 
 func readQueueCallback(message string, fileName string) {
 	util.LogInfo(fileName)
-	errCount := 0
-	scanner := bufio.NewScanner(strings.NewReader(message))
-	for scanner.Scan() {
-		util.LogInfo("inloop")
-		msg := scanner.Text()
-		go kafkaConfig.Write(msg, func(isWritten bool) {
-			if !isWritten {
-				errCount++
-			}
-		})
-	}
-	util.LogInfo("loop out")
-	if errCount == 0 {
-		util.LogInfo("commiting")
-		queueConfig.CommitFile(fileName)
-		util.LogInfo("commited file: ", fileName)
-		return
-	}
-	util.LogError("Cannot write to kafka: "+fileName+"& count:"+strconv.Itoa(errCount), errors.New(""))
+
+	kafkaConfig.WriteBulk(message, func(isWritten bool) {
+		if isWritten {
+			util.LogInfo("commiting")
+			queueConfig.CommitFile(fileName)
+			util.LogInfo("commited file: ", fileName)
+			return
+		} else {
+			util.LogError("Cannot write to kafka: "+fileName, errors.New(""))
+		}
+	})
+
 }
 
 func startKafka() error {
