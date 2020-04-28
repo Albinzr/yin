@@ -130,7 +130,7 @@ func beaconWriterCallback(message string) {
 }
 
 func readQueueCallback(message string, fileName string) {
-	util.LogInfo(fileName)
+	util.LogInfo("reading files")
 
 	kafkaConfig.WriteBulk(message, func(isWritten bool) {
 		if isWritten {
