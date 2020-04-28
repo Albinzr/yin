@@ -51,6 +51,9 @@ services:
       CONNECT_PRODUCER_MAX_REQUEST_SIZE: 99999999
       CONNECT_CONSUMER_MAX_PARTITION_FETCH_BYTES: 99999999
 
+      KAFKA_FETCH_MESSAGE_MAX_BYTES: 99999999
+      KAFKA_MAX_PARTITION_FETCH_BYTES: 99999999
+
     volumes:
       - kafka-storage:/var/run/docker.sock
       - kafka-storage:/var/lib/kafka
