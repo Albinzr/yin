@@ -10,8 +10,9 @@ services:
     image: yin-image
     ports:
       - "1000:1000"
-    volumes: 
-      - file-storage:/root/temp
+    # volumes: 
+      # - file-storage:/root/store
+      # - file-storage:/root/just.txt:ro
     expose:
     - "1000"
     restart: always
