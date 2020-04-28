@@ -7,9 +7,9 @@ services:
     container_name: yin-container 
     ports:
       - "1000:1000"
-    volumes: 
-      # - file-storage:/root/store
-      # - file-storage:/root/just.txt
+    # volumes: 
+    #   # - file-storage:/root/store
+    #   # - file-storage:/root/just.txt
     expose:
     - "1000"
     restart: always
