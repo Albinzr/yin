@@ -8,8 +8,8 @@ services:
     ports:
       - "1000:1000"
     volumes: 
-      - file-storage:/root/store
-      - file-storage:/root/just.txt
+      # - file-storage:/root/store
+      # - file-storage:/root/just.txt
     expose:
     - "1000"
     restart: always
