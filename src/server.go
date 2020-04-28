@@ -138,9 +138,8 @@ func readQueueCallback(message string, fileName string) {
 			queueConfig.CommitFile(fileName)
 			util.LogInfo("commited file: ", fileName)
 			return
-		} else {
-			util.LogError("Cannot write to kafka: "+fileName, errors.New(""))
 		}
+		util.LogError("Cannot write to kafka: "+fileName, errors.New(""))
 	})
 
 }
