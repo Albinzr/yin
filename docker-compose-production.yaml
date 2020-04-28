@@ -64,7 +64,7 @@ networks:
 
 # storage for yin server 
 volumes:
-  file-storage:
-    name: file-storage
+  # file-storage:
+  #   name: file-storage
   kafka-storage:
      name: kafka-storage
