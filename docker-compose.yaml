@@ -7,6 +7,8 @@ services:
       context: .
       dockerfile: yin.dockerfile
     container_name: yin-container 
+    depends_on:
+      - zookeeper
     image: yin-image
     ports:
       - "1000:1000"
@@ -19,21 +21,22 @@ services:
     networks:
       - yinyang-network
 
-# zookeeper 
   zookeeper:
-    image: wurstmeister/zookeeper:3.4.6
-    expose:
-      - "2181"
-    restart: always
-    networks:
-      - yinyang-network
-    container_name: zookeeper-container
-    logging:
-      driver: none
+      image: wurstmeister/zookeeper:3.4.6
+      expose:
+        - "2181"
+      restart: always
+      networks:
+        - yinyang-network
+      container_name: zookeeper-container
+      logging:
+        driver: none
 
-# kafka
+
   kafka:
-    image: wurstmeister/kafka:2.12-2.3.0
+    build:
+      context: .
+      dockerfile: kafka.dockerfile
     depends_on:
       - zookeeper
     ports:
@@ -48,15 +51,7 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
       KAFKA_LOG_DIRS: "/kafka/kafka-logs"
-      # fetch.message.max.bytes
-      # replica.fetch.max.bytes
-      # message.max.bytes
-      # max.message.bytes
-      KAFKA_FETCH_MESSAGE_MAX_BYTES: 99999999
-      KAFKA_REPLICA_FETCH_MAX_BYTES: 99999999
-      KAFKA_MESSAGE_MAX_BYTES: 99999999
-      KAFKA_MAX_MESSAGE_BYTES: 99999999
-      
+      KAFKA_MESSAGE_MAX_BYTES: 100000000
     volumes:
       - kafka-storage:/var/run/docker.sock
       - kafka-storage:/var/lib/kafka
@@ -66,6 +61,8 @@ services:
     container_name: kafka-container
     logging:
       driver: none
+    
+
 
 # global network for entire system
 networks:

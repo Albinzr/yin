@@ -133,6 +133,7 @@ func readQueueCallback(message string, fileName string) {
 	util.LogInfo("reading files")
 
 	kafkaConfig.WriteBulk(message, func(isWritten bool) {
+		// fmt.Println(message)
 		if isWritten {
 			util.LogInfo("commiting")
 			queueConfig.CommitFile(fileName)
