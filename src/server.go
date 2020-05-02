@@ -103,7 +103,7 @@ func setupHTTPServer(port string, io *socket.Server) {
 
 func socketConnectionListener() {
 	io.OnConnect("/", func(s socket.Conn) error {
-		util.LogInfo("connected....:", s.RemoteAddr().String())
+		util.LogInfo("connected....:", s.RemoteHeader())
 		s.Emit("ack", s.RemoteAddr().String())
 		return nil
 	})
