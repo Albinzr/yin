@@ -1,22 +1,38 @@
 version: "3.7"
 services:
-
-# reader server to read all incoming beacon
+  # reader server to read all incoming beacon
   yin:
     image: gcr.io/applytics/yin-image:latest
-    container_name: yin-container 
+    depends_on:
+      - zookeeper
+      - kafka
+      - redis
+    container_name: yin-container
     ports:
       - "1000:1000"
-    # volumes: 
+    # volumes:
     #   # - file-storage:/root/store
     #   # - file-storage:/root/just.txt
     expose:
-    - "1000"
+      - "1000"
     restart: always
     networks:
       - yinyang-network
 
-# zookeeper 
+      
+  redis:
+    image: "bitnami/redis:latest"
+    container_name: redis-container
+    ports:
+      - "6379"
+    environment:
+      - REDIS_REPLICATION_MODE=master
+      - REDIS_PASSWORD=""
+    volumes:
+      - redis-storage:/bitnami'
+    networks:
+      - yinyang-network
+  # zookeeper
   zookeeper:
     image: wurstmeister/zookeeper:3.4.6
     expose:
@@ -28,7 +44,7 @@ services:
     # logging:
     #   driver: none
 
-# kafka
+  # kafka
   kafka:
     image: wurstmeister/kafka:2.12-2.3.0
     depends_on:
@@ -62,9 +78,11 @@ networks:
     driver: bridge
     name: yinyang-network
 
-# storage for yin server 
+# storage for yin server
 volumes:
   # file-storage:
   #   name: file-storage
   kafka-storage:
-     name: kafka-storage
+    name: kafka-storage
+  redis-storage:
+    name: redis-storage

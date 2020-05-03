@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 	"time"
 
+	cache "applytics.in/yin/src/cache"
 	util "applytics.in/yin/src/helpers"
 	middleware "applytics.in/yin/src/middlewares"
 
@@ -34,6 +35,12 @@ var kafkaConfig = &kafka.Config{
 	MaxBytes:  env.MaxBytes,
 }
 
+var cacheConfig = &cache.Config{
+	Host:     "redis",
+	Port:     "6379",
+	Password: "",
+}
+
 var queueConfig = &queue.Config{
 	StoragePath: path,
 	FileSize:    env.FileSize,
@@ -48,6 +55,7 @@ func Start() {
 	util.LogInfo("Temp file storage path: ", path)
 	util.LogInfo("Env: ", env)
 	queueConfig.Init() // seprate thread
+	cacheConfig.Init()
 
 	//Start reading msgs from file and pass it to kafka
 	go readMessageToKafka() // seprate thread
@@ -103,16 +111,21 @@ func setupHTTPServer(port string, io *socket.Server) {
 
 func socketConnectionListener() {
 	io.OnConnect("/", func(s socket.Conn) error {
-		ip := s.RemoteHeader().Get("X-Real-Ip")
-		util.LogInfo("connected....:", ip)
-		s.Emit("ack", ip)
+		sID := s.RemoteHeader().Get("X-Sid-Id")
+		util.LogInfo(sID, "(((((((((((((((((((((((((((((((((((((((((((((((0)")
+		IP := s.RemoteHeader().Get("X-Real-Ip")
+		util.LogInfo("connected....:", IP)
+		cacheConfig.AddAppID(IP)
+		s.Emit("ack", IP)
 		return nil
 	})
 }
 
 func socketCloseListener(io *socket.Server) {
 	io.OnDisconnect("/", func(s socket.Conn, msg string) {
-		util.LogInfo("closed....:", s.RemoteAddr().String(), msg)
+		IP := s.RemoteHeader().Get("X-Real-Ip")
+		util.LogInfo("closed....:", IP)
+		cacheConfig.RemoveAppID(IP)
 		s.Close()
 	})
 }
@@ -120,7 +133,6 @@ func socketCloseListener(io *socket.Server) {
 func socketBeaconListener(callback Message) {
 	io.OnEvent("/", "beacon", func(s socket.Conn, msg string) {
 		s.Emit("msgAck", "Recived msg")
-		// util.LogInfo(msg)
 		callback(msg + "\n")
 	})
 }
