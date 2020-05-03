@@ -36,9 +36,9 @@ var kafkaConfig = &kafka.Config{
 }
 
 var cacheConfig = &cache.Config{
-	Host:     "redis",
-	Port:     "6379",
-	Password: "",
+	Host: "redis",
+	Port: "6379",
+	// Password: "",
 }
 
 var queueConfig = &queue.Config{
@@ -146,7 +146,6 @@ func readQueueCallback(message string, fileName string) {
 	util.LogInfo("reading files")
 
 	kafkaConfig.WriteBulk(message, func(isWritten bool) {
-		// fmt.Println(message)
 		if isWritten {
 			util.LogInfo("commiting")
 			queueConfig.CommitFile(fileName)

@@ -10,17 +10,17 @@ import (
 
 //Config :- config for redis
 type Config struct {
-	Host     string
-	Port     string
-	Password string
-	client   *redis.Client
+	Host string
+	Port string
+	// Password string
+	client *redis.Client
 }
 
 //Init :- init cache
 func (c *Config) Init() {
 	c.client = redis.NewClient(&redis.Options{
-		Addr:      c.Host + ":" + c.Port,
-		Password:  c.Password,
+		Addr: c.Host + ":" + c.Port,
+		// Password:  c.Password,
 		DB:        0,
 		OnConnect: onConnect,
 	})

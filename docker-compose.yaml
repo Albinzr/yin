@@ -28,8 +28,9 @@ services:
     ports:
       - "6379"
     environment:
-      - REDIS_REPLICATION_MODE=master
-      - REDIS_PASSWORD=""
+      - ALLOW_EMPTY_PASSWORD=yes
+      # - REDIS_REPLICATION_MODE=master
+      # - REDIS_PASSWORD=""
     volumes:
       - redis-storage:/bitnami'
     networks:
