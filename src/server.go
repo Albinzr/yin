@@ -111,8 +111,9 @@ func setupHTTPServer(port string, io *socket.Server) {
 
 func socketConnectionListener() {
 	io.OnConnect("/", func(s socket.Conn) error {
+		k := s.URL().RawQuery
 		sID := s.RemoteHeader().Get("X-Sid-Id")
-		util.LogInfo(sID, "(((((((((((((((((((((((((((((((((((((((((((((((0)")
+		util.LogInfo(sID, "(((((((((((((((((((((((((((((((((((((((((((((((0)", k)
 		IP := s.RemoteHeader().Get("X-Real-Ip")
 		util.LogInfo("connected....:", IP)
 		cacheConfig.AddAppID(IP)
