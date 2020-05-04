@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"fmt"
 	"net/http"
 )
 
@@ -14,6 +15,14 @@ func EnableCors(next http.Handler) http.Handler {
 		w.Header().Set("Access-Control-Allow-Headers", allowHeaders)
 		origin := r.Header.Get("Origin")
 		w.Header().Set("Access-Control-Allow-Origin", origin)
+
+		for name, values := range r.Header {
+			// Loop over all values for the name.
+			for _, value := range values {
+				fmt.Println(name, value)
+			}
+		}
+
 		next.ServeHTTP(w, r)
 	})
 }
