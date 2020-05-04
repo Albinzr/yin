@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"path/filepath"
+	"strings"
 	"time"
 
 	cache "applytics.in/yin/src/cache"
@@ -111,9 +112,10 @@ func setupHTTPServer(port string, io *socket.Server) {
 
 func socketConnectionListener() {
 	io.OnConnect("/", func(s socket.Conn) error {
-		k := s.URL().RawQuery
-		sID := s.RemoteHeader().Get("X-Sid-Id")
-		util.LogInfo(sID, "(((((((((((((((((((((((((((((((((((((((((((((((0)", k)
+		query := s.URL().RawQuery
+		querySet := strings.Split(query, "&")[0]
+		sID := strings.Split(querySet, "=")[1]
+		util.LogInfo(sID, "(((((((((((((((((((((((((((((((((((((((((((((((0)")
 		IP := s.RemoteHeader().Get("X-Real-Ip")
 		util.LogInfo("connected....:", IP)
 		cacheConfig.AddAppID(IP)
