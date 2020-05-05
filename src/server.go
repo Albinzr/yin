@@ -138,8 +138,6 @@ func socketCloseListener(io *socket.Server) {
 		cacheConfig.RemoveIP(IP)
 
 		query := s.URL().RawQuery
-		util.LogInfo("close query....:", query)
-		util.LogInfo(query)
 		querySplit := strings.Split(query, "&")
 		aidQuery := querySplit[1]
 		aID := strings.Split(aidQuery, "=")[1]
@@ -166,7 +164,6 @@ func readQueueCallback(message string, fileName string) {
 
 	kafkaConfig.WriteBulk(message, func(isWritten bool) {
 		if isWritten {
-			util.LogInfo("commiting")
 			queueConfig.CommitFile(fileName)
 			util.LogInfo("commited file: ", fileName)
 			return
