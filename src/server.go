@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"path/filepath"
+	"strings"
 	"time"
 
 	cache "applytics.in/yin/src/cache"
@@ -117,11 +118,14 @@ func socketConnectionListener() {
 
 		query := s.URL().RawQuery
 		util.LogInfo(query)
-		// querySet := strings.Split(query, "&")[0]
-		// sID := strings.Split(querySet, "=")[1]
-		// aID := strings.Split(querySet, "=")[3]
-		// cacheConfig.AddAppID(IP)
-		// cacheConfig.AddIP(IP, sID)
+		querySplit := strings.Split(query, "&")
+		sidQuery := querySplit[0]
+		aidQuery := querySplit[1]
+
+		sID := strings.Split(sidQuery, "=")[1]
+		aID := strings.Split(aidQuery, "=")[1]
+		cacheConfig.AddAppID(aID)
+		cacheConfig.AddIP(IP, sID)
 		s.Emit("ack", IP)
 		return nil
 	})
@@ -131,7 +135,16 @@ func socketCloseListener(io *socket.Server) {
 	io.OnDisconnect("/", func(s socket.Conn, msg string) {
 		IP := s.RemoteHeader().Get("X-Real-Ip")
 		util.LogInfo("closed....:", IP)
-		cacheConfig.RemoveAppID(IP)
+		cacheConfig.RemoveIP(IP)
+
+		query := s.URL().RawQuery
+		util.LogInfo("close query....:", query)
+		util.LogInfo(query)
+		querySplit := strings.Split(query, "&")
+		aidQuery := querySplit[1]
+		aID := strings.Split(aidQuery, "=")[1]
+		cacheConfig.RemoveAppID(aID)
+
 		s.Close()
 	})
 }
