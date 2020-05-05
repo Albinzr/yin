@@ -115,8 +115,8 @@ func socketConnectionListener() {
 		IP := s.RemoteHeader().Get("X-Real-Ip")
 		util.LogInfo("connected....:", IP)
 
-		// query := s.URL().RawQuery
-		// util.LogInfo(query)
+		query := s.URL().RawQuery
+		util.LogInfo(query)
 		// querySet := strings.Split(query, "&")[0]
 		// sID := strings.Split(querySet, "=")[1]
 		// aID := strings.Split(querySet, "=")[3]
