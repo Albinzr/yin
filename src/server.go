@@ -127,13 +127,11 @@ func socketConnectionListener() {
 
 		query := s.URL().RawQuery
 		querySplit := strings.Split(query, "&")
-		sidQuery := querySplit[0]
 		aidQuery := querySplit[1]
-		sID := strings.Split(sidQuery, "=")[1]
 		aID := strings.Split(aidQuery, "=")[1]
 
 		cacheConfig.AddAppID(aID)
-		cacheConfig.AddIP(IP, sID)
+
 		s.Emit("ack", IP)
 		return nil
 	})
@@ -143,7 +141,6 @@ func socketCloseListener(io *socket.Server) {
 	io.OnDisconnect("/", func(s socket.Conn, msg string) {
 		IP := s.RemoteHeader().Get("X-Real-Ip")
 		util.LogInfo("closed....:", IP)
-		cacheConfig.RemoveIP(IP)
 
 		query := s.URL().RawQuery
 		querySplit := strings.Split(query, "&")
