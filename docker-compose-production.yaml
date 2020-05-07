@@ -41,8 +41,6 @@ services:
     networks:
       - yinyang-network
     container_name: zookeeper-container
-    # logging:
-    #   driver: none
 
   # kafka
   kafka:
@@ -69,8 +67,7 @@ services:
       - yinyang-network
     restart: always
     container_name: kafka-container
-    # logging:
-    #   driver: none
+  
 
 # global network for entire system
 networks:

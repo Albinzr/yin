@@ -1,6 +1,7 @@
 package server
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
@@ -20,6 +21,14 @@ import (
 	"github.com/googollee/go-engine.io/transport/websocket"
 	socket "github.com/googollee/go-socket.io"
 )
+
+type closeMessage struct {
+	endTime time.Duration
+	ip      string
+	aid     string
+	sid     string
+	status  string
+}
 
 //Message :- simple type for message callback
 type Message func(message string)
@@ -117,13 +126,12 @@ func socketConnectionListener() {
 		util.LogInfo("connected....:", IP)
 
 		query := s.URL().RawQuery
-		util.LogInfo(query)
 		querySplit := strings.Split(query, "&")
 		sidQuery := querySplit[0]
 		aidQuery := querySplit[1]
-
 		sID := strings.Split(sidQuery, "=")[1]
 		aID := strings.Split(aidQuery, "=")[1]
+
 		cacheConfig.AddAppID(aID)
 		cacheConfig.AddIP(IP, sID)
 		s.Emit("ack", IP)
@@ -139,9 +147,30 @@ func socketCloseListener(io *socket.Server) {
 
 		query := s.URL().RawQuery
 		querySplit := strings.Split(query, "&")
+		sidQuery := querySplit[0]
 		aidQuery := querySplit[1]
+		sID := strings.Split(sidQuery, "=")[1]
 		aID := strings.Split(aidQuery, "=")[1]
+
 		cacheConfig.RemoveAppID(aID)
+
+		close := &closeMessage{
+			status:  "close",
+			sid:     sID,
+			aid:     aID,
+			ip:      IP,
+			endTime: time.Nanosecond,
+		}
+
+		closeJSON, err := json.Marshal(close)
+
+		if err != nil {
+			util.LogError("could not create close json", err)
+		}
+
+		msg := string(closeJSON) + "\n"
+
+		beaconWriterCallback(msg)
 
 		s.Close()
 	})
