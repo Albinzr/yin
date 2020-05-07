@@ -160,13 +160,13 @@ func socketCloseListener(io *socket.Server) {
 		}
 
 		closeJSON, err := json.Marshal(close)
-
+		util.LogInfo(closeJSON, "**************")
 		if err != nil {
 			util.LogError("could not create close json", err)
 		}
 
 		closeMsg := string(closeJSON) + "\n"
-
+		util.LogInfo(closeMsg, "______________________________")
 		beaconWriterCallback(closeMsg)
 
 		s.Close()
