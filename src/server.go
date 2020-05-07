@@ -165,9 +165,9 @@ func socketCloseListener(io *socket.Server) {
 			util.LogError("could not create close json", err)
 		}
 
-		msg := string(closeJSON) + "\n"
+		closeMsg := string(closeJSON) + "\n"
 
-		beaconWriterCallback(msg)
+		beaconWriterCallback(closeMsg)
 
 		s.Close()
 	})
