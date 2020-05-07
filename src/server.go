@@ -158,9 +158,10 @@ func socketCloseListener(io *socket.Server) {
 			ip:      IP,
 			endTime: time.Nanosecond,
 		}
-
+		util.LogInfo(sID, aID, IP, time.Nanosecond)
 		closeJSON, err := json.Marshal(close)
 		util.LogInfo(closeJSON, "**************")
+
 		if err != nil {
 			util.LogError("could not create close json", err)
 		}
