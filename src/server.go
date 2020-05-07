@@ -157,7 +157,7 @@ func socketCloseListener(io *socket.Server) {
 			Sid:     sID,
 			Aid:     aID,
 			IP:      IP,
-			EndTime: time.Nanosecond,
+			EndTime: time.Now().Unix(),
 		}
 		util.LogInfo(sID, aID, IP, time.Nanosecond)
 		closeJSON, err := json.Marshal(close)
