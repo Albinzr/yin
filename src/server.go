@@ -22,12 +22,13 @@ import (
 	socket "github.com/googollee/go-socket.io"
 )
 
-type closeMessage struct {
-	endTime time.Duration
-	ip      string
-	aid     string
-	sid     string
-	status  string
+//CloseMessage :- Close Message struct for end session
+type CloseMessage struct {
+	EndTime time.Duration `json:"endTime"`
+	IP      string        `json:"ip"`
+	Aid     string        `json:"aid"`
+	Sid     string        `json:"sid"`
+	Status  string        `json:"type"`
 }
 
 //Message :- simple type for message callback
@@ -151,12 +152,12 @@ func socketCloseListener(io *socket.Server) {
 
 		cacheConfig.RemoveAppID(aID)
 
-		close := &closeMessage{
-			status:  "close",
-			sid:     sID,
-			aid:     aID,
-			ip:      IP,
-			endTime: time.Nanosecond,
+		close := &CloseMessage{
+			Status:  "close",
+			Sid:     sID,
+			Aid:     aID,
+			IP:      IP,
+			EndTime: time.Nanosecond,
 		}
 		util.LogInfo(sID, aID, IP, time.Nanosecond)
 		closeJSON, err := json.Marshal(close)
