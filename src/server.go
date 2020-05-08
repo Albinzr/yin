@@ -24,11 +24,11 @@ import (
 
 //CloseMessage :- Close Message struct for end session
 type CloseMessage struct {
-	EndTime time.Duration `json:"endTime"`
-	IP      string        `json:"ip"`
-	Aid     string        `json:"aid"`
-	Sid     string        `json:"sid"`
-	Status  string        `json:"type"`
+	EndTime int64  `json:"endTime"`
+	IP      string `json:"ip"`
+	Aid     string `json:"aid"`
+	Sid     string `json:"sid"`
+	Status  string `json:"type"`
 }
 
 //Message :- simple type for message callback
@@ -157,7 +157,7 @@ func socketCloseListener(io *socket.Server) {
 			Sid:     sID,
 			Aid:     aID,
 			IP:      IP,
-			EndTime: time.Now().Unix(),
+			EndTime: time.Now().UnixNano() / int64(time.Millisecond),
 		}
 		util.LogInfo(sID, aID, IP, time.Nanosecond)
 		closeJSON, err := json.Marshal(close)
