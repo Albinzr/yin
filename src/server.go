@@ -131,7 +131,7 @@ func socketConnectionListener() {
 		aidQuery := querySplit[1]
 		aID := strings.Split(aidQuery, "=")[1]
 
-		cacheConfig.AddAppID(aID)
+		cacheConfig.UpdateOnlineCount(aID)
 
 		s.Emit("ack", IP)
 		return nil
@@ -150,7 +150,7 @@ func socketCloseListener(io *socket.Server) {
 		sID := strings.Split(sidQuery, "=")[1]
 		aID := strings.Split(aidQuery, "=")[1]
 
-		cacheConfig.RemoveAppID(aID)
+		cacheConfig.ReduceOnlineCount(aID)
 
 		close := &CloseMessage{
 			Status:  "close",
