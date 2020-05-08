@@ -87,10 +87,31 @@ func (c *Config) AddAppID(appID string) {
 
 //RemoveAppID :- remove Aid from cache
 func (c *Config) RemoveAppID(appID string) {
-	err := c.client.Del(appID).Err()
-	if err != nil {
-		util.LogError("cannot delete for key: "+appID, err)
+
+	val, err := c.client.Get(appID).Result()
+	if val != "" {
+		prevValue, err := strconv.Atoi(val)
+
+		if err != nil {
+			util.LogError("cannot convert app count to int for appID: "+appID+" with value "+val, err)
+			prevValue = 0
+		}
+		prevValue++
+
+		err = c.client.Set(appID, prevValue, 0).Err()
+
+		if err != nil {
+			util.LogError("cannot save value for appID: "+appID+" with value "+val, err)
+		}
+		return
 	}
+
+	err = c.client.Set(appID, 0, 0).Err()
+
+	if err != nil {
+		util.LogError("cannot save value for appID: "+appID+" with value 1", err)
+	}
+
 }
 
 //GetAppCount :- get app count
