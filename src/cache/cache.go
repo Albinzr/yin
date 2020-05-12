@@ -9,8 +9,8 @@ import (
 )
 
 const (
-	online = "-online"
-	today  = "-today"
+	online = "online-"
+	today  = "today-"
 )
 
 //Config :- config for redis
@@ -37,17 +37,17 @@ func onConnect(conn *redis.Conn) error {
 
 //UpdateOnlineCount :- cache appid in redis
 func (c *Config) UpdateOnlineCount(appID string) {
-	onlineKey := appID + online
+	onlineKey := online + appID
 	c.updateCount(onlineKey)
 
-	todayKey := appID + today
+	todayKey := today + appID
 	c.updateCount(todayKey)
 
 }
 
 //ReduceOnlineCount :- remove Aid from cache
 func (c *Config) ReduceOnlineCount(appID string) {
-	appIDKey := appID + online
+	appIDKey := online + appID
 	c.reduceCount(appIDKey)
 }
 
@@ -105,7 +105,7 @@ func (c *Config) reduceCount(appIDKey string) {
 
 //GetTodaysAppCount :- get app count
 func (c *Config) GetTodaysAppCount(appID string) *int {
-	todayKey := appID + today
+	todayKey := today + appID
 	val, err := c.client.Get(todayKey).Result()
 	if err != nil {
 		util.LogError("cannot count for appID: "+appID, err)
