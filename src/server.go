@@ -159,6 +159,7 @@ func socketCloseListener(io *socket.Server) {
 			IP:      IP,
 			EndTime: time.Now().UnixNano() / int64(time.Millisecond),
 		}
+		s.Close()
 		util.LogInfo(sID, aID, IP, time.Nanosecond)
 		closeJSON, err := json.Marshal(close)
 		util.LogInfo(closeJSON, "**************")
@@ -170,8 +171,6 @@ func socketCloseListener(io *socket.Server) {
 		closeMsg := string(closeJSON) + "\n"
 		util.LogInfo(closeMsg, "______________________________")
 		beaconWriterCallback(closeMsg)
-
-		s.Close()
 	})
 }
 
