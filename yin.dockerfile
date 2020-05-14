@@ -11,4 +11,3 @@ WORKDIR /root/
 EXPOSE 1000:1000
 COPY --from=goBuilder /go/src/yin/yin /go/src/yin/production.env /go/src/yin/local.env ./
 CMD ["./yin","-env","production"]  
-
