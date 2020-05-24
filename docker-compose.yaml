@@ -1,4 +1,4 @@
-version: "3.7"
+version: "3.8"
 services:
   # reader server to read all incoming beacon
   yin:
@@ -11,6 +11,10 @@ services:
       - kafka
       - redis
     image: yin-image
+    deploy:
+      resources:
+        limits:
+          memory: 300M
     ports:
       - "1000:1000"
     # volumes:
