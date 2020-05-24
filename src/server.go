@@ -174,7 +174,8 @@ func socketCloseListener(io *socket.Server) {
 		closeMsg := string(closeJSON) + "\n"
 		beaconWriterCallback(closeMsg)
 		PrintMemUsage()
-		s.Close()
+		closeErr := s.Close().Error()
+		util.LogInfo(closeErr)
 	})
 }
 
@@ -194,7 +195,7 @@ func socketBeaconEndListener(callback Message) {
 
 func beaconWriterCallback(message string) {
 	fmt.Print(".")
-	// queueConfig.Insert(message)
+	queueConfig.Insert(message)
 }
 
 func readQueueCallback(message string, fileName string) {
