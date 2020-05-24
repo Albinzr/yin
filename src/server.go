@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"time"
 
@@ -76,6 +77,9 @@ func Start() {
 
 	//Socket io beacon listner
 	socketBeaconListener(beaconWriterCallback)
+
+	//Socket io beaconEnd listner
+	socketBeaconEndListener(beaconWriterCallback)
 
 	//Socket io connection close listener
 	socketCloseListener(io)
@@ -169,6 +173,7 @@ func socketCloseListener(io *socket.Server) {
 
 		closeMsg := string(closeJSON) + "\n"
 		beaconWriterCallback(closeMsg)
+		PrintMemUsage()
 		s.Close()
 	})
 }
@@ -180,9 +185,16 @@ func socketBeaconListener(callback Message) {
 	})
 }
 
+func socketBeaconEndListener(callback Message) {
+	io.OnEvent("/", "beaconEnd", func(s socket.Conn, msg string) {
+		util.LogInfo(msg)
+		callback(msg + "\n")
+	})
+}
+
 func beaconWriterCallback(message string) {
 	fmt.Print(".")
-	queueConfig.Insert(message)
+	// queueConfig.Insert(message)
 }
 
 func readQueueCallback(message string, fileName string) {
@@ -206,4 +218,19 @@ func startKafka() error {
 	}
 	err := errors.New("Cannot connect to kafka")
 	return err
+}
+
+//PrintMemUsage -test
+func PrintMemUsage() {
+	var m runtime.MemStats
+	runtime.ReadMemStats(&m)
+	// For info on each, see: https://golang.org/pkg/runtime/#MemStats
+	fmt.Printf("Alloc = %v MiB", bToMb(m.Alloc))
+	fmt.Printf("\tTotalAlloc = %v MiB", bToMb(m.TotalAlloc))
+	fmt.Printf("\tSys = %v MiB", bToMb(m.Sys))
+	fmt.Printf("\tNumGC = %v\n", m.NumGC)
+}
+
+func bToMb(b uint64) uint64 {
+	return b / 1024 / 1024
 }
