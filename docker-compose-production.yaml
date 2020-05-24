@@ -10,6 +10,7 @@ services:
     container_name: yin-container
     ports:
       - "1000:1000"
+    mem_limit: 300m
     # volumes:
     #   # - file-storage:/root/store
     #   # - file-storage:/root/just.txt
