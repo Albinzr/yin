@@ -137,7 +137,7 @@ func socketConnectionListener() {
 
 		cacheConfig.UpdateOnlineCount(aID)
 
-		s.Emit("ack", IP)
+		s.Emit("ack", s.ID())
 		return nil
 	})
 }
