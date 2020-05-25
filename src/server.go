@@ -184,7 +184,7 @@ func socketBeaconListener(callback Message) {
 		ID := msg[0:4]
 		util.LogInfo(ID)
 		s.Emit("ack", ID)
-		callback(msg[5:] + "\n")
+		callback(msg[4:] + "\n")
 	})
 }
 
