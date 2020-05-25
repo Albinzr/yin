@@ -189,6 +189,10 @@ func socketBeaconListener(callback Message) {
 }
 
 func socketBeaconEndListener(callback Message) {
+	io.OnError("/", func(s socket.Conn, err error) {
+		util.LogError("socket error", err)
+	})
+
 	io.OnEvent("/", "beaconEnd", func(s socket.Conn, msg string) {
 		util.LogInfo(msg)
 		callback(msg + "\n")
