@@ -86,7 +86,11 @@ func (c *Config) reduceCount(appIDKey string) {
 			util.LogError("cannot convert app count to int for appID: "+appIDKey+" with value "+val, err)
 			prevValue = 0
 		}
-		prevValue--
+		if prevValue > 0 {
+			prevValue--
+		} else {
+			return
+		}
 
 		err = c.client.Set(appIDKey, prevValue, 0).Err()
 
