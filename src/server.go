@@ -137,7 +137,7 @@ func socketConnectionListener() {
 
 		cacheConfig.UpdateOnlineCount(aID)
 
-		s.Emit("ack", msg[0:4])
+		s.Emit("status", "connected")
 		return nil
 	})
 }
