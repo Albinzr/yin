@@ -137,7 +137,7 @@ func socketConnectionListener() {
 
 		cacheConfig.UpdateOnlineCount(aID)
 
-		s.Emit("ack", s.ID())
+		s.Emit("ack", msg[0:4])
 		return nil
 	})
 }
@@ -181,7 +181,7 @@ func socketCloseListener(io *socket.Server) {
 
 func socketBeaconListener(callback Message) {
 	io.OnEvent("/", "beacon", func(s socket.Conn, msg string) {
-		s.Emit("ack", s.ID())
+		s.Emit("ack", msg[0:4])
 		callback(msg + "\n")
 	})
 }
