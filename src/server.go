@@ -61,22 +61,22 @@ var queueConfig = &queue.Config{
 
 //Start :- server start function
 func Start() {
-	fmt.Printf("%+v\n", kafkaConfig)
-	fmt.Printf("%+v\n", queueConfig)
+	// fmt.Printf("%+v\n", kafkaConfig)
+	// fmt.Printf("%+v\n", queueConfig)
 
-	util.LogInfo("Temp file storage path: ", path)
-	util.LogInfo("Env: ", env)
-	queueConfig.Init() // seprate thread
-	cacheConfig.Init()
+	// util.LogInfo("Temp file storage path: ", path)
+	// util.LogInfo("Env: ", env)
+	// queueConfig.Init() // seprate thread
+	// cacheConfig.Init()
 
 	//Start reading msgs from file and pass it to kafka
-	go readMessageToKafka() // seprate thread
+	// go readMessageToKafka() // seprate thread
 
 	//Socket io connection event listener
 	socketConnectionListener()
 
 	//Socket io beacon listner
-	socketBeaconListener(beaconWriterCallback)
+	// socketBeaconListener(beaconWriterCallback)
 
 	//Socket io beaconEnd listner
 	socketBeaconEndListener(beaconWriterCallback)
@@ -201,7 +201,7 @@ func socketBeaconEndListener(callback Message) {
 
 func beaconWriterCallback(message string) {
 	fmt.Print(".")
-	// queueConfig.Insert(message)
+	queueConfig.Insert(message)
 }
 
 func readQueueCallback(message string, fileName string) {
