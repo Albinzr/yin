@@ -1,27 +1,27 @@
 package server
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
-	"log"
 	"net/http"
 	"path/filepath"
 	"runtime"
+	"strings"
 	"time"
 
 	cache "applytics.in/yin/src/cache"
 	util "applytics.in/yin/src/helpers"
+	middleware "applytics.in/yin/src/middlewares"
 
 	kafka "github.com/Albinzr/kafkaGo"
 	queue "github.com/Albinzr/queueGo"
 
-	"github.com/gorilla/websocket"
+	engineio "github.com/googollee/go-engine.io"
+	"github.com/googollee/go-engine.io/transport"
+	"github.com/googollee/go-engine.io/transport/websocket"
+	socket "github.com/googollee/go-socket.io"
 )
-
-var upgrader = websocket.Upgrader{
-	ReadBufferSize:  1024 * 5,
-	WriteBufferSize: 1024 * 5,
-}
 
 //CloseMessage :- Close Message struct for end session
 type CloseMessage struct {
@@ -37,7 +37,7 @@ type Message func(message string)
 
 var env = util.LoadEnvConfig()
 var path, _ = filepath.Abs("./store")
-
+var io *socket.Server = setupSocket()
 var kafkaConfig = &kafka.Config{
 	Topic:     env.KafkaTopic,
 	Partition: env.Partition,
@@ -70,12 +70,21 @@ func Start() {
 	cacheConfig.Init()
 
 	//Start reading msgs from file and pass it to kafka
-	go readMessageToKafka() // seprate thread
+	// go readMessageToKafka() // seprate thread
+
+	//Socket io connection event listener
+	socketConnectionListener()
+
+	//Socket io beacon listner
+	socketBeaconListener(beaconWriterCallback)
+
+	//Socket io beaconEnd listner
+	socketBeaconEndListener(beaconWriterCallback)
 
 	//Socket io connection close listener
-	// socketCloseListener(io)
+	socketCloseListener(io)
 
-	setupHTTPServer(env.Port)
+	setupHTTPServer(env.Port, io)
 }
 
 func readMessageToKafka() {
@@ -93,107 +102,102 @@ func readMessageToKafka() {
 	queueConfig.Read(readQueueCallback)
 }
 
-func echo(w http.ResponseWriter, r *http.Request) {
-	c, err := upgrader.Upgrade(w, r, nil)
-	if err != nil {
-		log.Print("upgrade:", err)
-		return
+func setupSocket() *socket.Server {
+
+	transporter := websocket.Default
+	transporter.CheckOrigin = func(req *http.Request) bool {
+		return true
 	}
-	defer c.Close()
-	for {
-		mt, message, err := c.ReadMessage()
-		if err != nil {
-			log.Println("read:", err)
-			break
-		}
-		log.Printf("recv: %s", message)
-		err = c.WriteMessage(mt, message)
-		if err != nil {
-			log.Println("write:", err)
-			break
-		}
-	}
+
+	options := &engineio.Options{Transports: []transport.Transport{transporter}}
+	server, err := socket.NewServer(options)
+	util.LogError("cannot start socket server", err)
+
+	go server.Serve()
+	return server
 }
 
-func setupHTTPServer(port string) {
-	http.HandleFunc("/beacon", echo)
+func setupHTTPServer(port string, io *socket.Server) {
+	http.Handle("/socket.io/", middleware.EnableCors(io))
+	util.LogInfo("Serving at localhost:" + port)
 	util.LogFatal(http.ListenAndServe(":"+port, nil))
+	defer io.Close()
 }
 
-// func socketConnectionListener() {
-// 	io.OnConnect("/", func(s socket.Conn) error {
+func socketConnectionListener() {
+	io.OnConnect("/", func(s socket.Conn) error {
 
-// 		IP := s.RemoteHeader().Get("X-Real-Ip")
-// 		util.LogInfo("connected....:", IP)
+		IP := s.RemoteHeader().Get("X-Real-Ip")
+		util.LogInfo("connected....:", IP)
 
-// 		query := s.URL().RawQuery
-// 		querySplit := strings.Split(query, "&")
-// 		aidQuery := querySplit[1]
-// 		aID := strings.Split(aidQuery, "=")[1]
+		query := s.URL().RawQuery
+		querySplit := strings.Split(query, "&")
+		aidQuery := querySplit[1]
+		aID := strings.Split(aidQuery, "=")[1]
 
-// 		cacheConfig.UpdateOnlineCount(aID)
+		cacheConfig.UpdateOnlineCount(aID)
 
-// 		s.Emit("status", "connected")
-// 		return nil
-// 	})
-// }
+		s.Emit("status", "connected")
+		return nil
+	})
+}
 
-// func socketCloseListener(io *socket.Server) {
-// 	io.OnDisconnect("/", func(s socket.Conn, msg string) {
-// 		IP := s.RemoteHeader().Get("X-Real-Ip")
-// 		util.LogInfo("closed....:", IP)
+func socketCloseListener(io *socket.Server) {
+	io.OnDisconnect("/", func(s socket.Conn, msg string) {
+		IP := s.RemoteHeader().Get("X-Real-Ip")
+		util.LogInfo("closed....:", IP)
 
-// 		query := s.URL().RawQuery
-// 		querySplit := strings.Split(query, "&")
-// 		sidQuery := querySplit[0]
-// 		aidQuery := querySplit[1]
-// 		sID := strings.Split(sidQuery, "=")[1]
-// 		aID := strings.Split(aidQuery, "=")[1]
+		query := s.URL().RawQuery
+		querySplit := strings.Split(query, "&")
+		sidQuery := querySplit[0]
+		aidQuery := querySplit[1]
+		sID := strings.Split(sidQuery, "=")[1]
+		aID := strings.Split(aidQuery, "=")[1]
 
-// 		cacheConfig.ReduceOnlineCount(aID)
+		cacheConfig.ReduceOnlineCount(aID)
 
-// 		close := &CloseMessage{
-// 			Status:  "close",
-// 			Sid:     sID,
-// 			Aid:     aID,
-// 			IP:      IP,
-// 			EndTime: time.Now().UnixNano() / int64(time.Millisecond),
-// 		}
+		close := &CloseMessage{
+			Status:  "close",
+			Sid:     sID,
+			Aid:     aID,
+			IP:      IP,
+			EndTime: time.Now().UnixNano() / int64(time.Millisecond),
+		}
 
-// 		util.LogInfo(sID, aID, IP, time.Nanosecond)
-// 		closeJSON, err := json.Marshal(close)
+		util.LogInfo(sID, aID, IP, time.Nanosecond)
+		closeJSON, err := json.Marshal(close)
 
-// 		if err != nil {
-// 			util.LogError("could not create close json", err)
-// 		}
+		if err != nil {
+			util.LogError("could not create close json", err)
+		}
 
-// 		closeMsg := string(closeJSON) + "\n"
-// 		beaconWriterCallback(closeMsg)
-// 		PrintMemUsage()
-// 		closeErr := s.Close().Error()
-// 		util.LogInfo(closeErr)
-// 	})
-// }
+		closeMsg := string(closeJSON) + "\n"
+		beaconWriterCallback(closeMsg)
+		PrintMemUsage()
+		closeErr := s.Close().Error()
+		util.LogInfo(closeErr)
+	})
+}
 
-// func socketBeaconListener(callback Message) {
-// 	io.OnEvent("/", "beacon", func(s socket.Conn, msg string) {
-// 		ID := msg[0:5]
-// 		util.LogInfo(ID)
-// 		s.Emit("ack", ID)
-// 		callback(msg[5:] + "\n")
-// 	})
-// }
+func socketBeaconListener(callback Message) {
+	io.OnEvent("/", "beacon", func(s socket.Conn, msg string) {
+		ID := msg[0:5]
+		util.LogInfo(ID)
+		s.Emit("ack", ID)
+		callback(msg[5:] + "\n")
+	})
+}
 
-// func socketBeaconEndListener(callback Message) {
-// 	io.OnError("/", func(s socket.Conn, err error) {
-// 		util.LogError("socket error", err)
-// 	})
+func socketBeaconEndListener(callback Message) {
+	io.OnError("/", func(s socket.Conn, err error) {
+		util.LogError("socket error", err)
+	})
 
-// 	io.OnEvent("/", "beaconEnd", func(s socket.Conn, msg string) {
-// 		util.LogInfo(msg)
-// 		callback(msg + "\n")
-// 	})
-// }
+	io.OnEvent("/", "beaconEnd", func(s socket.Conn, msg string) {
+		util.LogInfo(msg)
+		callback(msg + "\n")
+	})
+}
 
 func beaconWriterCallback(message string) {
 	fmt.Print(".")
