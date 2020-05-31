@@ -174,7 +174,9 @@ func socketCloseListener(io *socket.Server) {
 		closeMsg := string(closeJSON) + "\n"
 		beaconWriterCallback(closeMsg)
 		PrintMemUsage()
+		s.LeaveAll()
 		closeErr := s.Close().Error()
+
 		util.LogInfo(closeErr)
 	})
 }
