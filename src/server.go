@@ -201,7 +201,7 @@ func socketBeaconEndListener(callback Message) {
 
 func beaconWriterCallback(message string) {
 	fmt.Print(".")
-	queueConfig.Insert(message)
+	// queueConfig.Insert(message)
 }
 
 func readQueueCallback(message string, fileName string) {
