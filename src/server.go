@@ -186,7 +186,6 @@ func socketBeaconListener(callback Message) {
 		util.LogInfo(ID)
 		s.Emit("ack", ID)
 		callback(msg[5:] + "\n")
-		s.Close()
 	})
 }
 
@@ -239,7 +238,6 @@ func PrintMemUsage() {
 	fmt.Printf("\tSys = %v MiB", bToMb(m.Sys))
 	fmt.Printf("\tNumGC = %v\n", m.NumGC)
 	fmt.Printf("\tMemory Freed = %v\n", bToMb(m.Frees))
-
 }
 
 func bToMb(b uint64) uint64 {
