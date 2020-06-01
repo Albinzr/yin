@@ -70,7 +70,7 @@ func Start() {
 	cacheConfig.Init()
 
 	//Start reading msgs from file and pass it to kafka
-	// go readMessageToKafka() // seprate thread
+	go readMessageToKafka() // seprate thread
 
 	//Socket io connection event listener
 	socketConnectionListener()
