@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"path/filepath"
 	"runtime"
+	"runtime/debug"
 	"strings"
 	"time"
 
@@ -238,6 +239,9 @@ func PrintMemUsage() {
 	fmt.Printf("\tSys = %v MiB", bToMb(m.Sys))
 	fmt.Printf("\tNumGC = %v\n", m.NumGC)
 	fmt.Printf("\tMemory Freed = %v\n", bToMb(m.Frees))
+
+	runtime.GC()
+	debug.FreeOSMemory()
 }
 
 func bToMb(b uint64) uint64 {
