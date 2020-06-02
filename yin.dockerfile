@@ -1,5 +1,5 @@
 # Making build for project
-FROM golang:alpine AS goBuilder
+FROM golang:1.14.4-buster AS goBuilder
 WORKDIR /go/src/yin
 COPY . .
 RUN CGO_ENABLED=0 GOOS=linux go build -ldflags '-w -s' -a -installsuffix cgo -o yin
