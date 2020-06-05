@@ -12,6 +12,8 @@ github.com/Albinzr/queueGo v1.4.2 h1:penqlbeecUIgZ2mKweiwQsC2GGX38iowBzns6LdMrwY
 github.com/Albinzr/queueGo v1.4.2/go.mod h1:lvdKdObqmUziVMol+8oKLcmoWPdAvK93sJ7nBmLGm0Q=
 github.com/Albinzr/queueGo v1.4.3 h1:qqLz7/uh6Gijou6gHxJ4rLMMypftaEXm5TsQiQ+/CH8=
 github.com/Albinzr/queueGo v1.4.3/go.mod h1:Uu7ReZlSLBlag9O78I4Q+y8P6oAFsEngMf0tLYVY5ik=
+github.com/Albinzr/queueGo v1.4.5 h1:86fSSgdEQlPQS2yGOEjO5WRITr6oEp3lxF7NrzORAww=
+github.com/Albinzr/queueGo v1.4.5/go.mod h1:Uu7ReZlSLBlag9O78I4Q+y8P6oAFsEngMf0tLYVY5ik=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/DataDog/zstd v1.4.0 h1:vhoV+DUHnRZdKW1i5UMjAk2G4JY8wN4ayRfYDNdEhwo=
 github.com/DataDog/zstd v1.4.0/go.mod h1:1jcaCB/ufaK+sKp1NBhlGmpz41jOoPQ35bpF36t7BBo=
