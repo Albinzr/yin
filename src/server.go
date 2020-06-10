@@ -1,27 +1,20 @@
 package server
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
-	"net/http"
+	"net"
 	"path/filepath"
 	"runtime"
 	"runtime/debug"
-	"strings"
 	"time"
 
 	cache "applytics.in/yin/src/cache"
 	util "applytics.in/yin/src/helpers"
-	middleware "applytics.in/yin/src/middlewares"
 
 	kafka "github.com/Albinzr/kafkaGo"
 	queue "github.com/Albinzr/queueGo"
-
-	engineio "github.com/googollee/go-engine.io"
-	"github.com/googollee/go-engine.io/transport"
-	"github.com/googollee/go-engine.io/transport/websocket"
-	socket "github.com/googollee/go-socket.io"
+	socket "github.com/Albinzr/socketGo"
 )
 
 //CloseMessage :- Close Message struct for end session
@@ -38,7 +31,15 @@ type Message func(message string)
 
 var env = util.LoadEnvConfig()
 var path, _ = filepath.Abs("./store")
-var io *socket.Server = setupSocket()
+
+var socketConfig = &socket.Config{
+	Network:      "tcp",
+	Address:      ":8080",
+	OnConnect:    onConnect,
+	OnDisconnect: onDisonnect,
+	OnRecive:     onRecive,
+}
+
 var kafkaConfig = &kafka.Config{
 	Topic:     env.KafkaTopic,
 	Partition: env.Partition,
@@ -62,30 +63,24 @@ var queueConfig = &queue.Config{
 
 //Start :- server start function
 func Start() {
-	fmt.Printf("%+v\n", kafkaConfig)
-	fmt.Printf("%+v\n", queueConfig)
 
-	util.LogInfo("Temp file storage path: ", path)
-	util.LogInfo("Env: ", env)
-	queueConfig.Init() // seprate thread
-	cacheConfig.Init()
+	//log
+	logStartDetails()
 
 	//Start reading msgs from file and pass it to kafka
-	go readMessageToKafka() // seprate thread
+	go readMessageToKafka()
+	//configs
+	queueConfig.Init()
+	cacheConfig.Init()
+	socketConfig.Init()
 
-	//Socket io connection event listener
-	socketConnectionListener()
+}
 
-	//Socket io beacon listner
-	socketBeaconListener(beaconWriterCallback)
-
-	//Socket io beaconEnd listner
-	socketBeaconEndListener(beaconWriterCallback)
-
-	//Socket io connection close listener
-	socketCloseListener(io)
-
-	setupHTTPServer(env.Port, io)
+func logStartDetails() {
+	fmt.Printf("%+v\n", kafkaConfig)
+	fmt.Printf("%+v\n", queueConfig)
+	util.LogInfo("Temp file storage path: ", path)
+	util.LogInfo("Env: ", env)
 }
 
 func readMessageToKafka() {
@@ -103,102 +98,67 @@ func readMessageToKafka() {
 	queueConfig.Read(readQueueCallback)
 }
 
-func setupSocket() *socket.Server {
+func onConnect(s net.Conn) {
+	//ReapIP
+	//aID
 
-	transporter := websocket.Default
-	transporter.CheckOrigin = func(req *http.Request) bool {
-		return true
-	}
+	// IP := s.RemoteHeader().Get("X-Real-Ip")
+	// util.LogInfo("connected....:", IP)
 
-	options := &engineio.Options{Transports: []transport.Transport{transporter}}
-	server, err := socket.NewServer(options)
-	util.LogError("cannot start socket server", err)
+	// query := s.URL().RawQuery
+	// querySplit := strings.Split(query, "&")
+	// aidQuery := querySplit[1]
+	// aID := strings.Split(aidQuery, "=")[1]
 
-	go server.Serve()
-	return server
+	// cacheConfig.UpdateOnlineCount(aID)
+
+	s.Write([]byte("connected"))
+
 }
 
-func setupHTTPServer(port string, io *socket.Server) {
-	http.Handle("/socket.io/", middleware.EnableCors(io))
-	util.LogInfo("Serving at localhost:" + port)
-	util.LogFatal(http.ListenAndServe(":"+port, nil))
-	defer io.Close()
+func onDisonnect(conn net.Conn) {
+	// IP := s.RemoteHeader().Get("X-Real-Ip")
+	// 	util.LogInfo("closed....:", IP)
+
+	// 	query := s.URL().RawQuery
+	// 	querySplit := strings.Split(query, "&")
+	// 	sidQuery := querySplit[0]
+	// 	aidQuery := querySplit[1]
+	// 	sID := strings.Split(sidQuery, "=")[1]
+	// 	aID := strings.Split(aidQuery, "=")[1]
+
+	// 	cacheConfig.ReduceOnlineCount(aID)
+
+	// 	close := &CloseMessage{
+	// 		Status:  "close",
+	// 		Sid:     sID,
+	// 		Aid:     aID,
+	// 		IP:      IP,
+	// 		EndTime: time.Now().UnixNano() / int64(time.Millisecond),
+	// 	}
+
+	// 	closeJSON, err := json.Marshal(close)
+
+	// 	if err != nil {
+	// 		util.LogError("could not create close json", err)
+	// 	}
+
+	// 	closeMsg := string(closeJSON) + "\n"
+	// 	beaconWriterCallback(closeMsg)
+	// 	PrintMemUsage()
+	// 	s.LeaveAll()
+	// 	closeErr := s.Close().Error()
+
+	// 	util.LogInfo(closeErr)
+	PrintMemUsage()
 }
 
-func socketConnectionListener() {
-	io.OnConnect("/", func(s socket.Conn) error {
-
-		IP := s.RemoteHeader().Get("X-Real-Ip")
-		util.LogInfo("connected....:", IP)
-
-		query := s.URL().RawQuery
-		querySplit := strings.Split(query, "&")
-		aidQuery := querySplit[1]
-		aID := strings.Split(aidQuery, "=")[1]
-
-		cacheConfig.UpdateOnlineCount(aID)
-
-		s.Emit("status", "connected")
-		return nil
-	})
-}
-
-func socketCloseListener(io *socket.Server) {
-	io.OnDisconnect("/", func(s socket.Conn, msg string) {
-		IP := s.RemoteHeader().Get("X-Real-Ip")
-		util.LogInfo("closed....:", IP)
-
-		query := s.URL().RawQuery
-		querySplit := strings.Split(query, "&")
-		sidQuery := querySplit[0]
-		aidQuery := querySplit[1]
-		sID := strings.Split(sidQuery, "=")[1]
-		aID := strings.Split(aidQuery, "=")[1]
-
-		cacheConfig.ReduceOnlineCount(aID)
-
-		close := &CloseMessage{
-			Status:  "close",
-			Sid:     sID,
-			Aid:     aID,
-			IP:      IP,
-			EndTime: time.Now().UnixNano() / int64(time.Millisecond),
-		}
-
-		closeJSON, err := json.Marshal(close)
-
-		if err != nil {
-			util.LogError("could not create close json", err)
-		}
-
-		closeMsg := string(closeJSON) + "\n"
-		beaconWriterCallback(closeMsg)
-		PrintMemUsage()
-		s.LeaveAll()
-		closeErr := s.Close().Error()
-
-		util.LogInfo(closeErr)
-	})
-}
-
-func socketBeaconListener(callback Message) {
-	io.OnEvent("/", "beacon", func(s socket.Conn, msg string) {
-		ID := msg[0:5]
-		util.LogInfo(ID)
-		s.Emit("ack", ID)
-		callback(msg[5:] + "\n")
-	})
-}
-
-func socketBeaconEndListener(callback Message) {
-	io.OnError("/", func(s socket.Conn, err error) {
-		util.LogError("socket error", err)
-	})
-
-	io.OnEvent("/", "beaconEnd", func(s socket.Conn, msg string) {
-		util.LogInfo(msg)
-		callback(msg + "\n")
-	})
+func onRecive(conn net.Conn, channel string, msg string) {
+	fmt.Println(conn, channel, msg)
+	// ID := msg[0:5]
+	// util.LogInfo(ID)
+	// s.Emit("ack", ID)
+	// beaconWriterCallback(msg[5:] + "\n")
 }
 
 func beaconWriterCallback(message string) {
