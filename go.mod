@@ -7,6 +7,7 @@ require (
 	github.com/Albinzr/queueGo v1.4.5
 	github.com/Albinzr/socketGo v0.0.0-20200610202547-6fb257ebc149
 	github.com/go-redis/redis/v7 v7.4.0
+	github.com/googollee/go-engine.io v1.4.2
 	github.com/joho/godotenv v1.3.0
 	github.com/sirupsen/logrus v1.6.0
 )
