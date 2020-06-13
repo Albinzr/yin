@@ -34,7 +34,7 @@ var path, _ = filepath.Abs("./store")
 
 var socketConfig = &socket.Config{
 	Network:      "tcp",
-	Address:      ":8080",
+	Address:      ":1000",
 	OnConnect:    onConnect,
 	OnDisconnect: onDisonnect,
 	OnRecive:     onRecive,
