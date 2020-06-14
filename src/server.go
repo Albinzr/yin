@@ -99,6 +99,10 @@ func readMessageToKafka() {
 }
 
 func onConnect(s net.Conn) {
+	l := s.RemoteAddr().String()
+	m := s.LocalAddr().String()
+
+	util.LogInfo("****************", l, m, "*************")
 	//ReapIP
 	//aID
 
