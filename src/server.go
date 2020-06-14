@@ -111,7 +111,7 @@ func onConnect(s socket.Socket) {
 
 	// cacheConfig.UpdateOnlineCount(aID)
 
-	s.Write([]byte("connected"))
+	s.Write("connected")
 
 }
 
