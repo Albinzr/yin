@@ -14,6 +14,8 @@ github.com/Albinzr/socketGo v0.0.8 h1:ozqFShW1gZTYEBK0lZisYVFBLJLNdzsXP1Gy4glnmm
 github.com/Albinzr/socketGo v0.0.8/go.mod h1:FAULHyDOpMRI20sb7+ZMBtFJqZbfFsS67VUNkPRdYAU=
 github.com/Albinzr/socketGo v0.0.9 h1:kNbXc8rwl0VWsvRXSQEDRCzYNnedRjisZWi0V5+H6JY=
 github.com/Albinzr/socketGo v0.0.9/go.mod h1:FAULHyDOpMRI20sb7+ZMBtFJqZbfFsS67VUNkPRdYAU=
+github.com/Albinzr/socketGo v1.0.0 h1:PNGfZQtAO0HEgsf3guvmMQ03q/4pBtotVkAkco4YgMc=
+github.com/Albinzr/socketGo v1.0.0/go.mod h1:FAULHyDOpMRI20sb7+ZMBtFJqZbfFsS67VUNkPRdYAU=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/DataDog/zstd v1.4.0 h1:vhoV+DUHnRZdKW1i5UMjAk2G4JY8wN4ayRfYDNdEhwo=
 github.com/DataDog/zstd v1.4.0/go.mod h1:1jcaCB/ufaK+sKp1NBhlGmpz41jOoPQ35bpF36t7BBo=
