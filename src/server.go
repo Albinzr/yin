@@ -3,7 +3,6 @@ package server
 import (
 	"errors"
 	"fmt"
-	"net"
 	"path/filepath"
 	"runtime"
 	"runtime/debug"
@@ -98,11 +97,7 @@ func readMessageToKafka() {
 	queueConfig.Read(readQueueCallback)
 }
 
-func onConnect(s net.Conn) {
-	l := s.RemoteAddr().String()
-	m := s.LocalAddr().String()
-
-	util.LogInfo("****************", l, m, "*************")
+func onConnect(s socket.Socket) {
 	//ReapIP
 	//aID
 
@@ -120,7 +115,7 @@ func onConnect(s net.Conn) {
 
 }
 
-func onDisonnect(conn net.Conn) {
+func onDisonnect(s socket.Socket) {
 	// IP := s.RemoteHeader().Get("X-Real-Ip")
 	// 	util.LogInfo("closed....:", IP)
 
@@ -157,8 +152,8 @@ func onDisonnect(conn net.Conn) {
 	PrintMemUsage()
 }
 
-func onRecive(conn net.Conn, channel string, msg string) {
-	fmt.Println(conn, channel, msg)
+func onRecive(s socket.Socket, channel string, msg string) {
+	fmt.Println(s.IP, channel, msg)
 	// ID := msg[0:5]
 	// util.LogInfo(ID)
 	// s.Emit("ack", ID)
