@@ -83,7 +83,6 @@ func logStartDetails() {
 }
 
 func readMessageToKafka() {
-
 	//Start kafka
 	err := startKafka()
 	if err != nil {
@@ -149,6 +148,7 @@ func onDisonnect(s socket.Socket) {
 	// 	closeErr := s.Close().Error()
 
 	// 	util.LogInfo(closeErr)
+	s.Close()
 	PrintMemUsage()
 }
 
