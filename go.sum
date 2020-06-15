@@ -8,6 +8,8 @@ dmitri.shuralyov.com/state v0.0.0-20180228185332-28bcc343414c/go.mod h1:0PRwlb0D
 git.apache.org/thrift.git v0.0.0-20180902110319-2566ecd5d999/go.mod h1:fPE2ZNJGynbRyZ4dJvy6G277gSllfV2HJqblrnkyeyg=
 github.com/Albinzr/kafkaGo v1.0.10 h1:mDpwsTLptczU6uufQirUs0FrB6409FJSJIkrb/6gpwU=
 github.com/Albinzr/kafkaGo v1.0.10/go.mod h1:zvhEAcny8uS8XJ4SmKAKgVtE5DkuszcqEd2RPh7HiX0=
+github.com/Albinzr/lzGo v0.0.2 h1:0HX9bz1iH88gPSeJV7/kFli+KF9CMhDdZ/vY0asJn2s=
+github.com/Albinzr/lzGo v0.0.2/go.mod h1:hL93umxYuDbv9lBhdCycpbLJGacTJCa44zzGgSMwjZ0=
 github.com/Albinzr/queueGo v1.4.5 h1:86fSSgdEQlPQS2yGOEjO5WRITr6oEp3lxF7NrzORAww=
 github.com/Albinzr/queueGo v1.4.5/go.mod h1:Uu7ReZlSLBlag9O78I4Q+y8P6oAFsEngMf0tLYVY5ik=
 github.com/Albinzr/socketGo v0.0.8 h1:ozqFShW1gZTYEBK0lZisYVFBLJLNdzsXP1Gy4glnmmU=
@@ -16,6 +18,10 @@ github.com/Albinzr/socketGo v0.0.9 h1:kNbXc8rwl0VWsvRXSQEDRCzYNnedRjisZWi0V5+H6J
 github.com/Albinzr/socketGo v0.0.9/go.mod h1:FAULHyDOpMRI20sb7+ZMBtFJqZbfFsS67VUNkPRdYAU=
 github.com/Albinzr/socketGo v1.0.0 h1:PNGfZQtAO0HEgsf3guvmMQ03q/4pBtotVkAkco4YgMc=
 github.com/Albinzr/socketGo v1.0.0/go.mod h1:FAULHyDOpMRI20sb7+ZMBtFJqZbfFsS67VUNkPRdYAU=
+github.com/Albinzr/socketGo v1.0.1 h1:8ZDxmfw8aQyRNVua5e95G0GqB47OfWrSNdtn1v7TI8A=
+github.com/Albinzr/socketGo v1.0.1/go.mod h1:FAULHyDOpMRI20sb7+ZMBtFJqZbfFsS67VUNkPRdYAU=
+github.com/Albinzr/socketGo v1.0.2 h1:xbj3dJ6OfcywZR9B59wcbvfehYAI2X6HBrD/9NYZNEw=
+github.com/Albinzr/socketGo v1.0.2/go.mod h1:SYdoj8BVTDwdSwmKIW7yNlFZjlZgeaTdK6onOqPWDoI=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/DataDog/zstd v1.4.0 h1:vhoV+DUHnRZdKW1i5UMjAk2G4JY8wN4ayRfYDNdEhwo=
 github.com/DataDog/zstd v1.4.0/go.mod h1:1jcaCB/ufaK+sKp1NBhlGmpz41jOoPQ35bpF36t7BBo=
