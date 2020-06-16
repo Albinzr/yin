@@ -97,8 +97,6 @@ func readMessageToKafka() {
 }
 
 func onConnect(s socket.Socket) {
-	//ReapIP
-	//aID
 
 	// IP := s.RemoteHeader().Get("X-Real-Ip")
 	// util.LogInfo("connected....:", IP)
@@ -153,7 +151,7 @@ func onDisonnect(s socket.Socket) {
 }
 
 func onRecive(s socket.Socket, channel string, msg string) {
-	fmt.Println(s.IP, channel, msg)
+	// fmt.Println(s.IP, channel, msg)
 	// ID := msg[0:5]
 	// util.LogInfo(ID)
 	// s.Emit("ack", ID)

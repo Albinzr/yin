@@ -24,6 +24,7 @@ github.com/Albinzr/socketGo v1.0.2 h1:xbj3dJ6OfcywZR9B59wcbvfehYAI2X6HBrD/9NYZNE
 github.com/Albinzr/socketGo v1.0.2/go.mod h1:SYdoj8BVTDwdSwmKIW7yNlFZjlZgeaTdK6onOqPWDoI=
 github.com/Albinzr/socketGo v1.0.3 h1:MX8NoMH9PUhrOl5nnX9ku2i3Jpwiv9YNh/aPw2fzHqE=
 github.com/Albinzr/socketGo v1.0.3/go.mod h1:SYdoj8BVTDwdSwmKIW7yNlFZjlZgeaTdK6onOqPWDoI=
+github.com/Albinzr/socketGo v1.1.4 h1:ZleN54lvvvRV5o0UHUy7l7uScS3Dz2ADRo/3bbUOdN4=
 github.com/Albinzr/socketGo v1.1.4/go.mod h1:cXiDkoxDA4hNQNrJlsCS5l3PfqD2IZOM87CD72kLxGA=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/DataDog/zstd v1.4.0 h1:vhoV+DUHnRZdKW1i5UMjAk2G4JY8wN4ayRfYDNdEhwo=
@@ -75,6 +76,7 @@ github.com/gopherjs/gopherjs v0.0.0-20181017120253-0766667cb4d1/go.mod h1:wJfORR
 github.com/gordonklaus/ineffassign v0.0.0-20180909121442-1003c8bd00dc/go.mod h1:cuNKsD1zp2v6XfE/orVX2QE1LC+i254ceGcVeDT3pTU=
 github.com/gorilla/websocket v1.4.0 h1:WDFjx/TMzVgy9VdMMQi2K2Emtwi2QcUQsztZ/zLaH/Q=
 github.com/gorilla/websocket v1.4.0/go.mod h1:E7qHFY5m1UJ88s3WnNqhKjPHQ0heANvMoAMk2YaljkQ=
+github.com/gorilla/websocket v1.4.2 h1:+/TMaTYc4QFitKJxsQ7Yye35DkWvkdLcvGKqM+x0Ufc=
 github.com/gorilla/websocket v1.4.2/go.mod h1:YR8l580nyteQvAITg2hZ9XVh4b55+EU/adAjf1fMHhE=
 github.com/gregjones/httpcache v0.0.0-20180305231024-9cad4c3443a7/go.mod h1:FecbI9+v66THATjSRHfNgh1IVFe/9kFxbXtjV0ctIMA=
 github.com/grpc-ecosystem/grpc-gateway v1.5.0/go.mod h1:RSKVYQBd5MCa4OVpNdGskqpgL2+G+NZTnrVHpWWfpdw=
