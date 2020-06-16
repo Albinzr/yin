@@ -148,7 +148,7 @@ func onDisonnect(s socket.Socket) {
 	// 	closeErr := s.Close().Error()
 
 	// 	util.LogInfo(closeErr)
-	s.Close()
+	// s.Close()
 	PrintMemUsage()
 }
 
