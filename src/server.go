@@ -151,7 +151,8 @@ func onDisonnect(s socket.Socket) {
 }
 
 func onRecive(s socket.Socket, channel string, msg string) {
-	// fmt.Println(s.IP, channel, msg)
+
+	fmt.Println(msg)
 	// ID := msg[0:5]
 	// util.LogInfo(ID)
 	// s.Emit("ack", ID)
