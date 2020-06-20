@@ -1,6 +1,7 @@
 package server
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"path/filepath"
@@ -98,65 +99,45 @@ func readMessageToKafka() {
 
 func onConnect(s socket.Socket) {
 
-	// IP := s.RemoteHeader().Get("X-Real-Ip")
-	// util.LogInfo("connected....:", IP)
-
-	// query := s.URL().RawQuery
-	// querySplit := strings.Split(query, "&")
-	// aidQuery := querySplit[1]
-	// aID := strings.Split(aidQuery, "=")[1]
-
-	// cacheConfig.UpdateOnlineCount(aID)
-
+	IP := s.IP
+	util.LogInfo("connected....:", IP)
+	aID := s.Aid
+	cacheConfig.UpdateOnlineCount(aID)
 	s.Write("connected")
 
 }
 
 func onDisonnect(s socket.Socket) {
-	// IP := s.RemoteHeader().Get("X-Real-Ip")
-	// 	util.LogInfo("closed....:", IP)
+	IP := s.IP
+	util.LogInfo("closed....:", IP)
 
-	// 	query := s.URL().RawQuery
-	// 	querySplit := strings.Split(query, "&")
-	// 	sidQuery := querySplit[0]
-	// 	aidQuery := querySplit[1]
-	// 	sID := strings.Split(sidQuery, "=")[1]
-	// 	aID := strings.Split(aidQuery, "=")[1]
+	sID := s.Sid
+	aID := s.Aid
 
-	// 	cacheConfig.ReduceOnlineCount(aID)
+	cacheConfig.ReduceOnlineCount(aID)
 
-	// 	close := &CloseMessage{
-	// 		Status:  "close",
-	// 		Sid:     sID,
-	// 		Aid:     aID,
-	// 		IP:      IP,
-	// 		EndTime: time.Now().UnixNano() / int64(time.Millisecond),
-	// 	}
+	close := &CloseMessage{
+		Status:  "close",
+		Sid:     sID,
+		Aid:     aID,
+		IP:      IP,
+		EndTime: time.Now().UnixNano() / int64(time.Millisecond),
+	}
 
-	// 	closeJSON, err := json.Marshal(close)
+	closeJSON, err := json.Marshal(close)
 
-	// 	if err != nil {
-	// 		util.LogError("could not create close json", err)
-	// 	}
+	if err != nil {
+		util.LogError("could not create close json", err)
+	}
 
-	// 	closeMsg := string(closeJSON) + "\n"
-	// 	beaconWriterCallback(closeMsg)
-	// 	PrintMemUsage()
-	// 	s.LeaveAll()
-	// 	closeErr := s.Close().Error()
-
-	// 	util.LogInfo(closeErr)
-	// s.Close()
+	closeMsg := string(closeJSON) + "\n"
+	beaconWriterCallback(closeMsg)
+	PrintMemUsage()
 	PrintMemUsage()
 }
 
 func onRecive(s socket.Socket, channel string, msg string) {
-
-	fmt.Println(msg)
-	// ID := msg[0:5]
-	// util.LogInfo(ID)
-	// s.Emit("ack", ID)
-	// beaconWriterCallback(msg[5:] + "\n")
+	beaconWriterCallback(msg + "\n")
 }
 
 func beaconWriterCallback(message string) {
