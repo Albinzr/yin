@@ -20,10 +20,12 @@ import (
 //CloseMessage :- Close Message struct for end session
 type CloseMessage struct {
 	EndTime int64  `json:"endTime"`
+	Start  int64 `json:"startTime"`
 	IP      string `json:"ip"`
 	Aid     string `json:"aid"`
 	Sid     string `json:"sid"`
 	Status  string `json:"type"`
+
 }
 
 //Message :- simple type for message callback
@@ -121,7 +123,9 @@ func onDisonnect(s socket.Socket) {
 		Sid:     sID,
 		Aid:     aID,
 		IP:      IP,
-		EndTime: time.Now().UnixNano() / int64(time.Millisecond),
+		EndTime: s.EndTime,
+		Start: s.StartTime,
+
 	}
 
 	closeJSON, err := json.Marshal(close)
@@ -131,13 +135,12 @@ func onDisonnect(s socket.Socket) {
 	}
 
 	closeMsg := string(closeJSON) + "\n"
-	beaconWriterCallback(closeMsg)
-	PrintMemUsage()
+	beaconWriterCallback("dc " + closeMsg)
 	PrintMemUsage()
 }
 
 func onRecive(s socket.Socket, channel string, msg string) {
-	beaconWriterCallback(msg + "\n")
+	beaconWriterCallback("en " + msg + "\n")
 }
 
 func beaconWriterCallback(message string) {
@@ -151,7 +154,7 @@ func readQueueCallback(message string, fileName string) {
 	kafkaConfig.WriteBulk(message, func(isWritten bool) {
 		if isWritten {
 			queueConfig.CommitFile(fileName)
-			util.LogInfo("commited file: ", fileName)
+			util.LogInfo("committed file: ", fileName)
 			return
 		}
 		util.LogError("Cannot write to kafka: "+fileName, errors.New(""))
@@ -164,7 +167,7 @@ func startKafka() error {
 		util.LogInfo("Connected to kafka")
 		return nil
 	}
-	err := errors.New("Cannot connect to kafka")
+	err := errors.New("cannot connect to kafka")
 	return err
 }
 
