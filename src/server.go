@@ -68,15 +68,15 @@ var queueConfig = &queue.Config{
 
 //Start :- server start function
 func Start() {
-
+	go func() {
+		log.Fatal(http.ListenAndServe(":1001", nil))
+	}()
 	//log
 	logStartDetails()
 
 	//Start reading msgs from file and pass it to kafka
 	go readMessageToKafka()
-	go func() {
-		log.Fatal(http.ListenAndServe(":1000", nil))
-	}()
+
 	//configs
 	queueConfig.Init()
 	cacheConfig.Init()
