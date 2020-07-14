@@ -4,10 +4,13 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net/http"
 	"path/filepath"
 	"runtime"
 	"runtime/debug"
 	"time"
+	"log"
+	_ "net/http/pprof"
 
 	cache "applytics.in/yin/src/cache"
 	util "applytics.in/yin/src/helpers"
@@ -71,6 +74,9 @@ func Start() {
 
 	//Start reading msgs from file and pass it to kafka
 	go readMessageToKafka()
+	go func() {
+		log.Fatal(http.ListenAndServe(":1000", nil))
+	}()
 	//configs
 	queueConfig.Init()
 	cacheConfig.Init()
