@@ -116,25 +116,22 @@ func onConnect(s socket.Socket) {
 }
 
 func onDisonnect(s socket.Socket) {
-	IP := s.IP
-	util.LogInfo("closed....:", IP)
+	util.LogInfo("closed....:", s.IP)
 
-	sID := s.Sid
-	aID := s.Aid
-
-	cacheConfig.ReduceOnlineCount(aID)
+	cacheConfig.ReduceOnlineCount(s.Aid)
 
 	close := &CloseMessage{
 		Status:  "close",
-		Sid:     sID,
-		Aid:     aID,
-		IP:      IP,
+		Sid:     s.Sid,
+		Aid:     s.Aid,
+		IP:      s.IP,
 		EndTime: s.EndTime,
 		Start: s.StartTime,
 
 	}
-
-	util.LogInfo("**********************MSG*********************",close,"**********************MSGEnd*********************")
+	fmt.Println("**************CLOSE**************")
+	fmt.Printf("%+v\n", close)
+	fmt.Println("**************CLOSE END**************")
 
 	closeJSON, err := json.Marshal(close)
 
