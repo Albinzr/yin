@@ -134,6 +134,8 @@ func onDisonnect(s socket.Socket) {
 
 	}
 
+	util.LogInfo("**********************MSG*********************",close,"**********************MSGEnd*********************")
+
 	closeJSON, err := json.Marshal(close)
 
 	if err != nil {
