@@ -105,7 +105,7 @@ func readMessageToKafka() {
 	queueConfig.Read(readQueueCallback)
 }
 
-func onConnect(s socket.Socket) {
+func onConnect(s *socket.Socket) {
 
 	IP := s.IP
 	util.LogInfo("connected....:", IP)
@@ -115,7 +115,7 @@ func onConnect(s socket.Socket) {
 
 }
 
-func onDisonnect(s socket.Socket) {
+func onDisonnect(s *socket.Socket) {
 	util.LogInfo("closed....:", s.IP)
 
 	cacheConfig.ReduceOnlineCount(s.Aid)
@@ -144,7 +144,7 @@ func onDisonnect(s socket.Socket) {
 	PrintMemUsage()
 }
 
-func onRecive(s socket.Socket, channel string, msg string) {
+func onRecive(s *socket.Socket, channel string, msg string) {
 	beaconWriterCallback("en " + msg + "\n")
 }
 
