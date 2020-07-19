@@ -54,7 +54,7 @@ func (c *Config) ReduceOnlineCount(appID string) {
 func (c *Config) updateCount(appIDKey string) {
 	val, err := c.client.Get(appIDKey).Result()
 	fmt.Print("****************START******************")
-	fmt.Print(val,err)
+	fmt.Print(val,err,appIDKey)
 	fmt.Print("****************START END******************")
 	if val != "" {
 		prevValue, err := strconv.Atoi(val)
