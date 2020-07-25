@@ -129,6 +129,7 @@ func onDisonnect(s *socket.Socket) {
 		Start: s.StartTime,
 
 	}
+
 	fmt.Println("**************CLOSE**************")
 	fmt.Printf("%+v\n", close)
 	fmt.Println("**************CLOSE END**************")
