@@ -28,6 +28,9 @@ type CloseMessage struct {
 	Aid     string `json:"aid"`
 	Sid     string `json:"sid"`
 	Status  string `json:"type"`
+	ErrorCount int   `json:"errorCount"`
+	ClickCount int   `json:"clickCount"`
+	PageCount int    `json:"pageCount"`
 
 }
 
@@ -127,7 +130,9 @@ func onDisonnect(s *socket.Socket) {
 		IP:      s.IP,
 		EndTime: s.EndTime,
 		Start: s.StartTime,
-
+		ErrorCount :s.ErrorCount,
+		ClickCount :s.ClickCount,
+		PageCount :s.PageCount,
 	}
 
 	fmt.Println("**************CLOSE**************")
