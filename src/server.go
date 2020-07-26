@@ -31,6 +31,7 @@ type CloseMessage struct {
 	ErrorCount int   `json:"errorCount"`
 	ClickCount int   `json:"clickCount"`
 	PageCount int    `json:"pageCount"`
+	Initial bool    `json:"initial"`
 
 }
 
@@ -133,6 +134,7 @@ func onDisonnect(s *socket.Socket) {
 		ErrorCount :s.ErrorCount,
 		ClickCount :s.ClickCount,
 		PageCount :s.PageCount,
+		Initial: s.Initial,
 	}
 
 	fmt.Println("**************CLOSE**************")
