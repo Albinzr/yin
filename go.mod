@@ -4,7 +4,7 @@ go 1.13
 
 require (
 	github.com/Albinzr/kafkaGo v1.0.10
-	github.com/Albinzr/queueGo v1.4.5
+	github.com/Albinzr/queueGo v1.4.6
 	github.com/Albinzr/socketGo v1.4.1
 
 	github.com/go-redis/redis/v7 v7.4.0
