@@ -153,11 +153,15 @@ func onDisonnect(s *socket.Socket) {
 }
 
 func onRecive(s *socket.Socket, channel string, msg string) {
-	beaconWriterCallback("en " + msg + "\n")
+	if channel == "/beacon"{
+		beaconWriterCallback("en " + msg + "\n")
+	}else {
+		beaconWriterCallback("dc " + msg + "\n")
+	}
+
 }
 
 func beaconWriterCallback(message string) {
-	fmt.Print(".")
 	queueConfig.Insert(message)
 }
 
