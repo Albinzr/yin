@@ -14,6 +14,7 @@ github.com/Albinzr/lzGo v0.0.3/go.mod h1:hL93umxYuDbv9lBhdCycpbLJGacTJCa44zzGgSM
 github.com/Albinzr/queueGo v1.4.5 h1:86fSSgdEQlPQS2yGOEjO5WRITr6oEp3lxF7NrzORAww=
 github.com/Albinzr/queueGo v1.4.5/go.mod h1:Uu7ReZlSLBlag9O78I4Q+y8P6oAFsEngMf0tLYVY5ik=
 github.com/Albinzr/queueGo v1.4.6/go.mod h1:Uu7ReZlSLBlag9O78I4Q+y8P6oAFsEngMf0tLYVY5ik=
+github.com/Albinzr/queueGo v1.4.7 h1:VpvjGM0KL+xG47+0gD0+F1wR3j1Xp/dECyNRx/F+oqc=
 github.com/Albinzr/queueGo v1.4.7/go.mod h1:4KLobh7gjC+iGufnRNv6ikIdYI6dsqWaMmgoEOLL6L0=
 github.com/Albinzr/socketGo v1.3.4 h1:Of6lBlDq5ACdZTanBx5QxyxXExqqstv2cvNpG1pH4cc=
 github.com/Albinzr/socketGo v1.3.4/go.mod h1:G8j6NZUdUiL8obf8y8wxMzWuWjUJ7kvTuGXl9TdDJ8s=
@@ -32,6 +33,7 @@ github.com/Albinzr/socketGo v1.4.6/go.mod h1:G8j6NZUdUiL8obf8y8wxMzWuWjUJ7kvTuGX
 github.com/Albinzr/socketGo v1.4.7/go.mod h1:G8j6NZUdUiL8obf8y8wxMzWuWjUJ7kvTuGXl9TdDJ8s=
 github.com/Albinzr/socketGo v1.4.8/go.mod h1:G8j6NZUdUiL8obf8y8wxMzWuWjUJ7kvTuGXl9TdDJ8s=
 github.com/Albinzr/socketGo v1.4.9/go.mod h1:G8j6NZUdUiL8obf8y8wxMzWuWjUJ7kvTuGXl9TdDJ8s=
+github.com/Albinzr/socketGo v1.5.0 h1:TUze5inCNZXFENeRNhaG7fKl7trsGYWaOLoKge0sRRA=
 github.com/Albinzr/socketGo v1.5.0/go.mod h1:G8j6NZUdUiL8obf8y8wxMzWuWjUJ7kvTuGXl9TdDJ8s=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/DataDog/zstd v1.4.0 h1:vhoV+DUHnRZdKW1i5UMjAk2G4JY8wN4ayRfYDNdEhwo=
@@ -79,6 +81,7 @@ github.com/googleapis/gax-go v2.0.0+incompatible/go.mod h1:SFVmujtThgffbyetf+mdk
 github.com/googleapis/gax-go/v2 v2.0.3/go.mod h1:LLvjysVCY1JZeum8Z6l8qUty8fiNwE08qbEPm1M08qg=
 github.com/googollee/go-engine.io v1.4.2 h1:q0FNdZ2g5atRyO0j+P8rHvQf/JjjKHrCUCr2Dmnufmc=
 github.com/googollee/go-engine.io v1.4.2/go.mod h1:26oFqHsnuWIzNOM0T08x21eQOydBosKOCgK3tyhzPPI=
+github.com/googollee/go-engine.io v1.4.3-0.20200220091802-9b2ab104b298 h1:mvWmnIGGum8tzT62pTdjxSxCMOyxE7qCToNijulH+zE=
 github.com/googollee/go-engine.io v1.4.3-0.20200220091802-9b2ab104b298/go.mod h1:iaugrHMOoal16IKAWvH6y6RrXXIzfOULxjNwvXBCV4o=
 github.com/googollee/go-socket.io v1.4.3/go.mod h1:MRKd5ouUDz3WpEDRnD44JEAytwK1utsJv59QJyjGCio=
 github.com/gopherjs/gopherjs v0.0.0-20181017120253-0766667cb4d1/go.mod h1:wJfORRmW1u3UXTncJ5qlYoELFm8eSnnEO6hX4iZ3EWY=
