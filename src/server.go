@@ -140,7 +140,7 @@ func onDisonnect(s *socket.Socket) {
 	closeJSON, err := json.Marshal(s)
 	fmt.Println("**************CLOSE**************")
 	fmt.Printf("%+v\n", s)
-	fmt.Println(closeJSON)
+	fmt.Println(string(closeJSON))
 	fmt.Println("**************CLOSE END**************")
 
 	if err != nil {
