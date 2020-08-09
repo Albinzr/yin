@@ -137,11 +137,11 @@ func onDisonnect(s *socket.Socket) {
 	// 	Initial:    s.Initial,
 	// }
 
+	closeJSON, err := json.Marshal(s)
 	fmt.Println("**************CLOSE**************")
 	fmt.Printf("%+v\n", s)
+	fmt.Println(closeJSON)
 	fmt.Println("**************CLOSE END**************")
-
-	closeJSON, err := json.Marshal(s)
 
 	if err != nil {
 		util.LogError("could not create close json", err)
