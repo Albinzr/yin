@@ -4,13 +4,13 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
+	_ "net/http/pprof"
 	"path/filepath"
 	"runtime"
 	"runtime/debug"
 	"time"
-	"log"
-	_ "net/http/pprof"
 
 	cache "applytics.in/yin/src/cache"
 	util "applytics.in/yin/src/helpers"
@@ -21,19 +21,19 @@ import (
 )
 
 //CloseMessage :- Close Message struct for end session
-type CloseMessage struct {
-	EndTime int64  `json:"endTime"`
-	Start  int64 `json:"startTime"`
-	IP      string `json:"ip"`
-	Aid     string `json:"aid"`
-	Sid     string `json:"sid"`
-	Status  string `json:"type"`
-	ErrorCount int   `json:"errorCount"`
-	ClickCount int   `json:"clickCount"`
-	PageCount int    `json:"pageCount"`
-	Initial bool    `json:"initial"`
+// type CloseMessage struct {
+// 	EndTime int64  `json:"endTime"`
+// 	Start  int64 `json:"startTime"`
+// 	IP      string `json:"ip"`
+// 	Aid     string `json:"aid"`
+// 	Sid     string `json:"sid"`
+// 	Status  string `json:"type"`
+// 	ErrorCount int   `json:"errorCount"`
+// 	ClickCount int   `json:"clickCount"`
+// 	PageCount int    `json:"pageCount"`
+// 	Initial bool    `json:"initial"`
 
-}
+// }
 
 //Message :- simple type for message callback
 type Message func(message string)
@@ -124,24 +124,24 @@ func onDisonnect(s *socket.Socket) {
 
 	cacheConfig.ReduceOnlineCount(s.Aid)
 
-	close := &CloseMessage{
-		Status:  "close",
-		Sid:     s.Sid,
-		Aid:     s.Aid,
-		IP:      s.IP,
-		EndTime: s.EndTime,
-		Start: s.StartTime,
-		ErrorCount :s.ErrorCount,
-		ClickCount :s.ClickCount,
-		PageCount :s.PageCount,
-		Initial: s.Initial,
-	}
+	// close := &CloseMessage{
+	// 	Status:     "close",
+	// 	Sid:        s.Sid,
+	// 	Aid:        s.Aid,
+	// 	IP:         s.IP,
+	// 	EndTime:    s.EndTime,
+	// 	Start:      s.StartTime,
+	// 	ErrorCount: s.ErrorCount,
+	// 	ClickCount: s.ClickCount,
+	// 	PageCount:  s.PageCount,
+	// 	Initial:    s.Initial,
+	// }
 
 	fmt.Println("**************CLOSE**************")
-	fmt.Printf("%+v\n", close)
+	fmt.Printf("%+v\n", s)
 	fmt.Println("**************CLOSE END**************")
 
-	closeJSON, err := json.Marshal(close)
+	closeJSON, err := json.Marshal(s)
 
 	if err != nil {
 		util.LogError("could not create close json", err)
@@ -153,9 +153,9 @@ func onDisonnect(s *socket.Socket) {
 }
 
 func onRecive(s *socket.Socket, channel string, msg string) {
-	if channel == "/beacon"{
+	if channel == "/beacon" {
 		beaconWriterCallback("en " + msg + "\n")
-	}else {
+	} else {
 		beaconWriterCallback("dc " + msg + "\n")
 	}
 
