@@ -20,21 +20,6 @@ import (
 	socket "github.com/Albinzr/socketGo"
 )
 
-//CloseMessage :- Close Message struct for end session
-// type CloseMessage struct {
-// 	EndTime int64  `json:"endTime"`
-// 	Start  int64 `json:"startTime"`
-// 	IP      string `json:"ip"`
-// 	Aid     string `json:"aid"`
-// 	Sid     string `json:"sid"`
-// 	Status  string `json:"type"`
-// 	ErrorCount int   `json:"errorCount"`
-// 	ClickCount int   `json:"clickCount"`
-// 	PageCount int    `json:"pageCount"`
-// 	Initial bool    `json:"initial"`
-
-// }
-
 //Message :- simple type for message callback
 type Message func(message string)
 
