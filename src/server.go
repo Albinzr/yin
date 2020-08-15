@@ -106,7 +106,7 @@ func onConnect(s *socket.Socket) {
 	aID := s.Aid
 	cacheConfig.UpdateOnlineCount(aID)
 
-	config := sessionConfig{
+	config := &sessionConfig{
 		status: true,
 		config: nil,
 	}
