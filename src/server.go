@@ -20,6 +20,11 @@ import (
 	socket "github.com/Albinzr/socketGo"
 )
 
+type sessionConfig struct {
+	status bool
+	config interface{}
+}
+
 //Message :- simple type for message callback
 type Message func(message string)
 
@@ -100,7 +105,16 @@ func onConnect(s *socket.Socket) {
 	util.LogInfo("connected....:", IP)
 	aID := s.Aid
 	cacheConfig.UpdateOnlineCount(aID)
-	s.Write("connected")
+
+	config := sessionConfig{
+		status: true,
+		config: nil,
+	}
+	configJSON, err := json.Marshal(config)
+	if err != nil {
+		util.LogError("cannot create json from config", err)
+	}
+	s.Write(string(configJSON))
 
 }
 
@@ -108,19 +122,6 @@ func onDisonnect(s *socket.Socket) {
 	util.LogInfo("closed....:", s.IP)
 
 	cacheConfig.ReduceOnlineCount(s.Aid)
-
-	// close := &CloseMessage{
-	// 	Status:     "close",
-	// 	Sid:        s.Sid,
-	// 	Aid:        s.Aid,
-	// 	IP:         s.IP,
-	// 	EndTime:    s.EndTime,
-	// 	Start:      s.StartTime,
-	// 	ErrorCount: s.ErrorCount,
-	// 	ClickCount: s.ClickCount,
-	// 	PageCount:  s.PageCount,
-	// 	Initial:    s.Initial,
-	// }
 
 	closeJSON, err := json.Marshal(s)
 	fmt.Println("**************CLOSE**************")
