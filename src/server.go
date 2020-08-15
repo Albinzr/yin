@@ -107,8 +107,8 @@ func onConnect(s *socket.Socket) {
 	cacheConfig.UpdateOnlineCount(aID)
 
 	config := &sessionConfig{
-		status: true,
-		config: nil,
+		ShouldRecord: true,
+		Config:       nil,
 	}
 	configJSON, err := json.Marshal(config)
 	if err != nil {
