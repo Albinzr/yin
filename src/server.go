@@ -114,6 +114,7 @@ func onConnect(s *socket.Socket) {
 	if err != nil {
 		util.LogError("cannot create json from config", err)
 	}
+	fmt.Println(configJSON, "......................", string(configJSON))
 	s.Write(string(configJSON))
 
 }
