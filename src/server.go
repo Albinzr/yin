@@ -21,8 +21,8 @@ import (
 )
 
 type sessionConfig struct {
-	status bool
-	config interface{}
+	ShouldRecord bool        `json:"shouldRecord"`
+	Config       interface{} `json:"config"`
 }
 
 //Message :- simple type for message callback
