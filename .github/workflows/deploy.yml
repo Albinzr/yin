@@ -26,6 +26,7 @@ jobs:
         service_account_email: ${{ secrets.GKE_EMAIL }}
         service_account_key: ${{ secrets.GKE_KEY }}
 
+
     # Configure docker to use the gcloud command-line tool as a credential helper
     - run: |
         # Set up docker to authenticate
@@ -38,7 +39,7 @@ jobs:
     - name: copy production docker-compose file
       uses: appleboy/scp-action@master
       env:
-        HOST: applytics.in
+        HOST: 35.185.50.61
         USERNAME: git_bot
         KEY: ${{ secrets.SERVER_PRIVATE_KEY }}
       with:
@@ -49,7 +50,7 @@ jobs:
     - name: ssh to instance
       uses: appleboy/ssh-action@master
       with:
-        host: applytics.in
+        host: 35.185.50.61
         username: git_bot
         key: ${{ secrets.SERVER_PRIVATE_KEY }}
         script: cd yin && sudo docker pull gcr.io/applytics/yin-image:latest && sudo docker-compose -f docker-compose-production.yaml up -d && sudo docker image prune -f
