@@ -114,7 +114,9 @@ func onConnect(s *socket.Socket) {
 	if err != nil {
 		util.LogError("cannot create json from config", err)
 	}
-	fmt.Println(configJSON, "......................", string(configJSON))
+	fmt.Println("************** On Connection Start**************")
+	fmt.Println(string(configJSON))
+	fmt.Println("****************************")
 	s.Write(string(configJSON))
 
 }
@@ -125,10 +127,9 @@ func onDisonnect(s *socket.Socket) {
 	cacheConfig.ReduceOnlineCount(s.Aid)
 
 	closeJSON, err := json.Marshal(s)
-	fmt.Println("**************CLOSE**************")
-	fmt.Printf("%+v\n", s)
+	fmt.Println("**************On Conccection End **************")
 	fmt.Println(string(closeJSON))
-	fmt.Println("**************CLOSE END**************")
+	fmt.Println("****************************")
 
 	if err != nil {
 		util.LogError("could not create close json", err)
