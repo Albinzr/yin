@@ -51,7 +51,7 @@ jobs:
     - name: ssh to instance
       uses: appleboy/ssh-action@master
       with:
-        host: 35.185.50.61
+        host: 35.194.49.165
         username: git_bot
         key: ${{ secrets.SERVER_PRIVATE_KEY }}
         script: cd yin && sudo docker pull gcr.io/applytics/yin-image:latest && sudo docker-compose -f docker-compose-production.yaml up -d && sudo docker image prune -f
