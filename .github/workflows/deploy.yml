@@ -21,14 +21,19 @@ jobs:
       run:  docker tag yin-image gcr.io/applytics/yin-image 
       
     # Setup gcloud CLI
-    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+#     - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+#       with:
+#         version: '270.0.0'
+#         service_account_email: ${{ secrets.GKE_EMAIL }}
+#         service_account_key: ${{ secrets.GKE_KEY }}
+
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@master
       with:
-        version: '270.0.0'
-        service_account_email: ${{ secrets.GKE_EMAIL }}
-        service_account_key: ${{ secrets.GKE_KEY }}
-
-
-    # Configure docker to use the gcloud command-line tool as a credential helper
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
+        export_default_credentials: true
+        
     - run: |
         # Set up docker to authenticate
         # via gcloud command-line tool.
