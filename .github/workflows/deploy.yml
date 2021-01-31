@@ -18,7 +18,7 @@ jobs:
       run: docker image ls
     
     - name: Tag image
-      run:  docker tag yin-image gcr.io/green-chalice-303317/yin-image
+      run:  docker tag yin-image gcr.io/applytics-303318/yin-image
       
     - name: Set up Cloud SDK
       uses: google-github-actions/setup-gcloud@master
@@ -33,7 +33,7 @@ jobs:
         gcloud auth configure-docker
     
     - name: Push image to google container
-      run:  docker push gcr.io/green-chalice-303317/yin-image
+      run:  docker push gcr.io/applytics-303318/yin-image
       
     - name: copy production docker-compose file
       uses: appleboy/scp-action@master
@@ -52,4 +52,4 @@ jobs:
         host: 34.72.31.42 
         username: git_bot
         key: ${{ secrets.SERVER_PRIVATE_KEY }}
-        script: cd yin && sudo docker pull gcr.io/green-chalice-303317/yin-image:latest && sudo docker-compose -f docker-compose-production.yaml up -d && sudo docker image prune -f
+        script: cd yin && sudo docker pull gcr.io/applytics-303318/yin-image:latest && sudo docker-compose -f docker-compose-production.yaml up -d && sudo docker image prune -f
