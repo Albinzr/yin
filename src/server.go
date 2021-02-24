@@ -81,8 +81,8 @@ func Start() {
 func logStartDetails() {
 	fmt.Printf("%+v\n", kafkaConfig)
 	fmt.Printf("%+v\n", queueConfig)
-	util.LogInfo("Temp file storage path: ", path)
-	util.LogInfo("Env: ", env)
+	// util.LogInfo("Temp file storage path: ", path)
+	// util.LogInfo("Env: ", env)
 }
 
 func readMessageToKafka() {
@@ -94,7 +94,7 @@ func readMessageToKafka() {
 		time.AfterFunc(30*time.Second, readMessageToKafka)
 	}
 
-	util.LogInfo("Started reading message from file")
+	// util.LogInfo("Started reading message from file")
 	//Read from file
 	queueConfig.Read(readQueueCallback)
 }
@@ -114,9 +114,9 @@ func onConnect(s *socket.Socket) {
 	if err != nil {
 		util.LogError("cannot create json from config", err)
 	}
-	fmt.Println("************** On Connection Start**************")
+	fmt.Println("************** Connection Opened **************")
 	fmt.Println(string(configJSON))
-	fmt.Println("****************************")
+	fmt.Println("***********************************************")
 	s.Write(string(configJSON))
 
 }
@@ -127,9 +127,9 @@ func onDisonnect(s *socket.Socket) {
 	cacheConfig.ReduceOnlineCount(s.Aid)
 
 	closeJSON, err := json.Marshal(s)
-	fmt.Println("**************On Conccection End **************")
+	fmt.Println("************** Conccection Closed **************")
 	fmt.Println(string(closeJSON))
-	fmt.Println("****************************")
+	fmt.Println("***********************************************")
 
 	if err != nil {
 		util.LogError("could not create close json", err)
@@ -137,7 +137,7 @@ func onDisonnect(s *socket.Socket) {
 
 	closeMsg := string(closeJSON) + "\n"
 	beaconWriterCallback("dc " + closeMsg)
-	PrintMemUsage()
+	// PrintMemUsage()
 }
 
 func onRecive(s *socket.Socket, channel string, msg string) {
