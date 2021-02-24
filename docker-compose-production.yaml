@@ -3,10 +3,10 @@ services:
   # reader server to read all incoming beacon
   yin:
     image: gcr.io/applytics-303318/yin-image:latest
-    deploy:
-      resources:
-        limits:
-          memory: 300M
+    # deploy:
+    #   resources:
+    #     limits:
+    #       memory: 300M
     depends_on:
       - zookeeper
       - kafka

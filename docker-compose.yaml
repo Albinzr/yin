@@ -11,10 +11,10 @@ services:
       - kafka
       - redis
     image: yin-image
-    deploy:
-      resources:
-        limits:
-          memory: 300M
+    # deploy:
+    #   resources:
+    #     limits:
+    #       memory: 300M
     ports:
       - "1000:1000"
     # volumes:
