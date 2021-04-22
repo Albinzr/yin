@@ -72,7 +72,6 @@ services:
     restart: always
     container_name: kafka-container
   
-
 # global network for entire system
 networks:
   yinyang-network:
